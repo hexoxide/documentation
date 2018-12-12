@@ -3,4 +3,6 @@ Project documentation files in raw editable formats.
 
 ## index
 
-1. [Glossary](glossary.md)
+1. [Technical Design Report](technical-design-report)
+2. [Glossary](glossary.md)
+
