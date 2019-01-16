@@ -1,5 +1,7 @@
 # MELK Installation Guide
 
+**Run the following commands in a terminal with root access**
+
 ## Install Golang
 
 Metricbeat cannot be installed directly, as Elastic currently doesnt natively support ARM architectures. This means compiling Metricbeat from source, which requires Golang 1.8.
