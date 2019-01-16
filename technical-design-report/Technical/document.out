@@ -1,0 +1,35 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Legacy software}{}% 2
+\BOOKMARK [1][-]{section.3}{Installation}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Verify software installation}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Configuration arguments \046 yaml files}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Hardware Specifications}{}% 6
+\BOOKMARK [1][-]{section.5}{Synthetic benchmarks}{}% 7
+\BOOKMARK [1][-]{section.6}{Hardware \046 software setup}{}% 8
+\BOOKMARK [2][-]{subsection.6.1}{Network}{section.6}% 9
+\BOOKMARK [2][-]{subsection.6.2}{New software introduction}{section.6}% 10
+\BOOKMARK [2][-]{subsection.6.3}{New software \046 system components}{section.6}% 11
+\BOOKMARK [2][-]{subsection.6.4}{Installation}{section.6}% 12
+\BOOKMARK [2][-]{subsection.6.5}{SSH}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.6}{Ansible}{section.6}% 14
+\BOOKMARK [2][-]{subsection.6.7}{MELK}{section.6}% 15
+\BOOKMARK [3][-]{subsubsection.6.7.1}{Logging metrics}{subsection.6.7}% 16
+\BOOKMARK [1][-]{section.7}{Source Code Documentation}{}% 17
+\BOOKMARK [2][-]{subsection.7.1}{Generate}{section.7}% 18
+\BOOKMARK [2][-]{subsection.7.2}{Access}{section.7}% 19
+\BOOKMARK [2][-]{subsection.7.3}{Modify}{section.7}% 20
+\BOOKMARK [1][-]{section.8}{Research design}{}% 21
+\BOOKMARK [2][-]{subsection.8.1}{Problem Statement}{section.8}% 22
+\BOOKMARK [3][-]{subsubsection.8.1.1}{ALICE}{subsection.8.1}% 23
+\BOOKMARK [3][-]{subsubsection.8.1.2}{Problem}{subsection.8.1}% 24
+\BOOKMARK [2][-]{subsection.8.2}{Research Framework}{section.8}% 25
+\BOOKMARK [2][-]{subsection.8.3}{Main Research Question}{section.8}% 26
+\BOOKMARK [2][-]{subsection.8.4}{Sub Research Question}{section.8}% 27
+\BOOKMARK [1][-]{section.9}{Experiments}{}% 28
+\BOOKMARK [2][-]{subsection.9.1}{Network throughput baseline}{section.9}% 29
+\BOOKMARK [3][-]{subsubsection.9.1.1}{Operation}{subsection.9.1}% 30
+\BOOKMARK [3][-]{subsubsection.9.1.2}{Results}{subsection.9.1}% 31
+\BOOKMARK [2][-]{subsection.9.2}{Round Robin ICN}{section.9}% 32
+\BOOKMARK [3][-]{subsubsection.9.2.1}{Operation}{subsection.9.2}% 33
+\BOOKMARK [1][-]{section.10}{Appendix}{}% 34
+\BOOKMARK [2][-]{subsection.10.1}{Commands to replicate network throughput baseline}{section.10}% 35
