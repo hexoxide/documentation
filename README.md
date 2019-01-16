@@ -4,11 +4,12 @@ Project documentation files in (most) raw editable formats.
 ## index
 
 1. [Getting started](getting-started.md)
-2. [Technical Design Report](technical-design-report)
-3. [Experiment data, diagrams & images](experiments)
-4. [Requiremenst process analysis and recommendation](requirements-workshop)
-5. [Draw IO diagrams](draw-io)
-6. [Glossary](glossary.md)
+2. [MELK Installation Guide](MELK-Installation-Guide.md)
+3. [Technical Design Report](technical-design-report)
+4. [Experiment data, diagrams & images](experiments)
+5. [Requiremenst process analysis and recommendation](requirements-workshop)
+6. [Draw IO diagrams](draw-io)
+7. [Glossary](glossary.md)
 
 ## online resources
 
