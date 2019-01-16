@@ -1,0 +1,35 @@
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}
+\contentsline {section}{\numberline {2}Legacy software}{4}{section.2}
+\contentsline {section}{\numberline {3}Installation}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}Verify software installation}{5}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Configuration arguments \& yaml files}{5}{subsection.3.2}
+\contentsline {section}{\numberline {4}Hardware Specifications}{6}{section.4}
+\contentsline {section}{\numberline {5}Synthetic benchmarks}{6}{section.5}
+\contentsline {section}{\numberline {6}Hardware \& software setup}{7}{section.6}
+\contentsline {subsection}{\numberline {6.1}Network}{8}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}New software introduction}{9}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}New software \& system components}{9}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Installation}{10}{subsection.6.4}
+\contentsline {subsection}{\numberline {6.5}SSH}{10}{subsection.6.5}
+\contentsline {subsection}{\numberline {6.6}Ansible}{11}{subsection.6.6}
+\contentsline {subsection}{\numberline {6.7}MELK}{11}{subsection.6.7}
+\contentsline {subsubsection}{\numberline {6.7.1}Logging metrics}{12}{subsubsection.6.7.1}
+\contentsline {section}{\numberline {7}Source Code Documentation}{13}{section.7}
+\contentsline {subsection}{\numberline {7.1}Generate}{13}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Access}{13}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Modify}{13}{subsection.7.3}
+\contentsline {section}{\numberline {8}Research design}{14}{section.8}
+\contentsline {subsection}{\numberline {8.1}Problem Statement}{14}{subsection.8.1}
+\contentsline {subsubsection}{\numberline {8.1.1}ALICE}{14}{subsubsection.8.1.1}
+\contentsline {subsubsection}{\numberline {8.1.2}Problem}{14}{subsubsection.8.1.2}
+\contentsline {subsection}{\numberline {8.2}Research Framework}{15}{subsection.8.2}
+\contentsline {subsection}{\numberline {8.3}Main Research Question}{15}{subsection.8.3}
+\contentsline {subsection}{\numberline {8.4}Sub Research Question}{15}{subsection.8.4}
+\contentsline {section}{\numberline {9}Experiments}{16}{section.9}
+\contentsline {subsection}{\numberline {9.1}Network throughput baseline}{16}{subsection.9.1}
+\contentsline {subsubsection}{\numberline {9.1.1}Operation}{17}{subsubsection.9.1.1}
+\contentsline {subsubsection}{\numberline {9.1.2}Results}{18}{subsubsection.9.1.2}
+\contentsline {subsection}{\numberline {9.2}Round Robin ICN}{19}{subsection.9.2}
+\contentsline {subsubsection}{\numberline {9.2.1}Operation}{21}{subsubsection.9.2.1}
+\contentsline {section}{\numberline {10}Appendix}{23}{section.10}
+\contentsline {subsection}{\numberline {10.1}Commands to replicate network throughput baseline}{23}{subsection.10.1}

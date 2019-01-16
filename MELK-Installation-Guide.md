@@ -1,6 +1,6 @@
-# MELK Installation Guide
+# MELK Installation Guide 
 
-**Run the following commands in a terminal with root access**
+**Run the following commands in a terminal with root access unless stated otherwise.**
 
 ## Install Golang
 
