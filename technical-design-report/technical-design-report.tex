@@ -1,5 +1,8 @@
+% \documentclass[article, onecolumn]{IEEEtran}
+% \IEEEoverridecommandlockouts
 \documentclass[]{article}
 
+\usepackage{cite}
 \usepackage{color, colortbl}
 \usepackage{float}
 \usepackage{graphicx}
@@ -18,7 +21,6 @@
 
 \definecolor{red}{rgb}{1,0.9,0.9}
 \definecolor{green}{rgb}{0.9,1,0.9}
-
 
 \title{Technical Design Report \\
 	\large Software for Science - CERN Load Balancing}
@@ -41,7 +43,7 @@
 
 
 \section*{Introduction}
-This document reflects the discovered \& analysed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
+This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
 Experiments and there setup are detailed so they can be repeated easily in the future as well as instructions how to install all required components. 
 
@@ -53,8 +55,8 @@ Experiments and there setup are detailed so they can be repeated easily in the f
 			\hline
 			\textbf{Version} & \textbf{Date} & \textbf{Description} \\ \hline
 			
-			\multirow{1}{*}{0.2} & 07-11-2018 & \tabitemNum 1. Added information on changing to debian image. \\
-			& & \tabitemNum 2. Added information about investigating metric-beats for information logging. \\
+			\multirow{1}{*}{0.2} & 07-11-2018 & \tabitemNum 1. Added information on changing to Debian image. \\
+			& & \tabitemNum 2. Added information about investigating Metricbeat for information logging. \\
 			& & \tabitemNum 3. Added table of contents. \\
 			& & \tabitemNum 4. Added information on how legacy software was setup and used. \\
 			& & \tabitemNum 5. Added previously logged metrics and desired metrics. \\ \hline
@@ -71,7 +73,7 @@ Experiments and there setup are detailed so they can be repeated easily in the f
 			\multirow{1}{*}{0.5} & 12-12-2018 & \tabitemNum 1. Add operation diagram for network baseline experiment. \\
 			& & \tabitemNum 2. Finish documentation of network baseline experiment. \\ \hline
 			
-			\multirow{1}{*}{0.6} & 10-01-2019 & \tabitemNum 1. Add round robin icn experiment. \\ \hline
+			\multirow{1}{*}{0.6} & 10-01-2019 & \tabitemNum 1. Add round robin ICN experiment. \\ \hline
 			
 			\multirow{1}{*}{0.7} & 15-01-2019 & \tabitemNum 1. Add source code documentation section. \\
 			& & \tabitemNum 2. Add results for round robin ICN. \\ \hline
@@ -81,24 +83,24 @@ Experiments and there setup are detailed so they can be repeated easily in the f
 			& & \tabitemNum 3. Added networking diagrams. \\
 			& & \tabitemNum 4. Described software and system components. \\
 			& & \tabitemNum 5. Generalized SSH description. \\
-			& & \tabitemNum 6. Described metricbeat and it’s metrics. \\
+			& & \tabitemNum 6. Described Metricbeat and it’s metrics. \\
 			& & \tabitemNum 7. Explained table underlinement. \\
 			& & \tabitemNum 8. Describe the run operation for the round robin ICN experiment. \\
 			& & \tabitemNum 9. Discussion \& results. \\
 			& & \tabitemNum 10. MELK-installation-guide reference added \\
 			& & \tabitemNum 11. MELK Sub Question. \\
-			& & \tabitemNum 12. Added Zookeeper section. \\ \hline
+			& & \tabitemNum 12. Added ZooKeeper section. \\ \hline
+			& & \tabitemNum 13. Added Bibtex for IEEE referencing. \\ \hline
+			& & \tabitemNum 13. Added CERN official Bibtex document output to reference TDR. \\ \hline
 		\end{tabularx}
 	\end{center}
 \end{table}
 \newpage
 
-
 \tableofcontents{}
 \newpage
 
-
-\section{Legacy software}
+\section{Previous versions of software}
 \textit{\textbf{Disclaimer: The legacy software has never reached an operational stage in the duration of Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the legacy software to run experiments.}}
 
 At the start of this project numerous previous experiments have been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these softwares worked and references them so that they can be used in the future.
@@ -113,14 +115,14 @@ To make sure the exact version of the software can be retrieved the git version 
 			
 			O2Balancer & Binaries used in experiments containing specific algorithms to be tested. & \hyperref[sec:ref01]{O2 [1]} & 36eec89 \\ \hline
 			
-			BalancerScripts & Setting up nodes with ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & \hyperref[sec:ref02]{Scripts [2]} & 99f7177 \\ \hline
+			BalancerScripts & Setting up nodes with Ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & \hyperref[sec:ref02]{Scripts [2]} & 99f7177 \\ \hline
 		\end{tabularx}
 		\caption{Legacy Software.}
 		\label{tab:specs}
 	\end{center}
 \end{table}
 
-Newer software will likely still be distributed through git, but will be made available through the software-for-science github organisation. The repositories from previous experiments can now be on the organisation project. See this link for the page: \url{https://github.com/SoftwareForScience/O2-Balancer}
+Newer software will likely still be distributed through git, but will be made available through the software-for-science Github organization. The repositories from previous experiments can now be on the organization project. See this link for the page: \url{https://github.com/SoftwareForScience/O2-Balancer}
 
 
 \section{Installation}
@@ -129,7 +131,7 @@ Documentation for the O2Balancer was based upon CentOS, as a result it might be 
 For other distributions with different package managers it should be fairly easy to replace the packages specified for the YUM package manager, however, installing all requirements for the O2Balancer can require a significant amount of system memory (between 8-16 gigabytes).
 
 \subsection{Verify software installation}
-Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first zookeeper needs to be started.
+Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first ZooKeeper needs to be started.
 
 \begin{lstlisting}
 sudo /usr/share/zookeeper/bin/zkServer.sh start
@@ -150,7 +152,7 @@ Each individual binary has command line arguments and a configuration file, some
 			--sample-size & int & Size of individual packets send between FLP \& EPN in MB. \\ \hline
 			--ip & string & ? \\ \hline
 		\end{tabularx}
-		\caption{ICN parameters.}
+		\caption{Information Node parameters.}
 		\label{tab:specs}
 	\end{center}
 \end{table}
@@ -190,11 +192,10 @@ Each individual binary has command line arguments and a configuration file, some
 
 The execute.sh script will open a total of 6 windows which should appear, each running a different type of node software. In total there should be 3 EPN’s, 2 FLP’s \& 1 InformationNode.
 
-
 \section{Hardware Specifications}
-According to the A Large Ion Collider Experiment (ALICE) technical design report \hyperref[sec:ref01]{TDR [1]}, there will be two types of computing nodes in the O2 project after long shutdown 2 (LS2). In total there will be about 2000 nodes in O2, 250 so called FLP nodes and 1750 EPN nodes.
+According to the A Large Ion Collider Experiment (ALICE) technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the O$^2$ project after long shutdown 2 (LS2). In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
 
-A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O2 computing network. The computing devices at AUAS will be Raspberry Pi’s, specifically, model 3 B+.
+A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pi’s, specifically, model 3 B+.
 
 In table 1 a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for ALICE O2. These hardware differences must be taken greatly into account during the project and its various experiments.
 
@@ -847,7 +848,6 @@ During the round robin ICN experiments metricbeat was used on the raspberry pi n
 	\end{figure}
 \end{center}
 
-
 \section{Conclusion}
 200Hz event rates should be manageable with only a small reduction in throughput when using the round robin algorithm, additional experiments with more nodes are required.
 
@@ -855,27 +855,27 @@ Metricbeat could be useful but it requires a lot of effort to be correctly confi
 
 Future experiments should take multiple iteration times into account as this parameter can affect results. Perhaps previous experiments should be repeated with different iteration times.
 
-
 \section{Discussion}
 Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During this experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes a larger variety of iteration times could also benefit the results.
 
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
 
-\begin{thebibliography}{}
-	\label{sec:ref01}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer}{O2-Balancer}
-	\label{sec:ref02}\bibitem{}\href{https://github.com/valvy/BalancerScripts}{Balancer Scripts}
-	\label{sec:ref03}\bibitem{}\href{http://cds.cern.ch/record/2011297/files/ALICE-TDR-019.pdf?version=3}{ALICE Technical Design Report}
-	\label{sec:ref04}\bibitem{}\href{https://iperf.fr/}{iPerf}
-	\label{sec:ref05}\bibitem{}\href{https://github.com/hexoxide/documentation/blob/master/draw-io/Network-Primary-Auxillary-Dec-14.png}{Networking diagram with auxiliary interface}
-	\label{sec:ref06}\bibitem{}\href{https://github.com/hexoxide/raspberry-dependency}{Raspberry Dependency}
-	\label{sec:ref07}\bibitem{}\href{https://github.com/hexoxide/BalancerScripts2}{Balancer Scripts 2}
-	\label{sec:ref08}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2}{O2-Balancer 2}
-	\label{sec:ref09}\bibitem{}\href{https://github.com/hexoxide/documentation}{Documentation}	
-	\label{sec:ref10}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/commits/experiment-1}{O2-Balancer 2 Commits}
-	\label{sec:ref11}\bibitem{}\href{https://github.com/hexoxide/documentation/tree/cdbb643c6ebc875e73e8c1c2433c6d14cda05aca}{Documentation cdbb643}
-	\label{sec:ref12}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/tree/zookeepertje}{O2-Balancer 2 Zookeepertje}
-	\label{sec:ref13}\bibitem{}\href{https://github.com/valvy/}{GitHub Valvy Profile}
-\end{thebibliography}
-
+% \begin{thebibliography}{}
+% 	\label{sec:ref01}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer}{O2-Balancer}
+% 	\label{sec:ref02}\bibitem{}\href{https://github.com/valvy/BalancerScripts}{Balancer Scripts}
+% 	\label{sec:ref03}\bibitem{}\href{http://cds.cern.ch/record/2011297/files/ALICE-TDR-019.pdf?version=3}{ALICE Technical Design Report}
+% 	\label{sec:ref04}\bibitem{}\href{https://iperf.fr/}{iPerf}
+% 	\label{sec:ref05}\bibitem{}\href{https://github.com/hexoxide/documentation/blob/master/draw-io/Network-Primary-Auxillary-Dec-14.png}{Networking diagram with auxiliary interface}
+% 	\label{sec:ref06}\bibitem{}\href{https://github.com/hexoxide/raspberry-dependency}{Raspberry Dependency}
+% 	\label{sec:ref07}\bibitem{}\href{https://github.com/hexoxide/BalancerScripts2}{Balancer Scripts 2}
+% 	\label{sec:ref08}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2}{O2-Balancer 2}
+% 	\label{sec:ref09}\bibitem{}\href{https://github.com/hexoxide/documentation}{Documentation}	
+% 	\label{sec:ref10}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/commits/experiment-1}{O2-Balancer 2 Commits}
+% 	\label{sec:ref11}\bibitem{}\href{https://github.com/hexoxide/documentation/tree/cdbb643c6ebc875e73e8c1c2433c6d14cda05aca}{Documentation cdbb643}
+% 	\label{sec:ref12}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/tree/zookeepertje}{O2-Balancer 2 Zookeepertje}
+% 	\label{sec:ref13}\bibitem{}\href{https://github.com/valvy/}{GitHub Valvy Profile}
+% \end{thebibliography}
 
 \section{Appendix}
 
