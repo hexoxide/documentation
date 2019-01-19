@@ -34,19 +34,10 @@
 \date{\textbf{\today} \\
 	v1.0}
 
-
 \begin{document}
-
 
 \maketitle
 \newpage
-
-
-\section*{Introduction}
-This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
-
-Experiments and there setup are detailed so they can be repeated easily in the future as well as instructions how to install all required components. 
-
 
 \section*{Changelog}
 \begin{table}[H]
@@ -90,8 +81,8 @@ Experiments and there setup are detailed so they can be repeated easily in the f
 			& & \tabitemNum 10. MELK-installation-guide reference added \\
 			& & \tabitemNum 11. MELK Sub Question. \\
 			& & \tabitemNum 12. Added ZooKeeper section. \\ \hline
-			& & \tabitemNum 13. Added Bibtex for IEEE referencing. \\ \hline
-			& & \tabitemNum 13. Added CERN official Bibtex document output to reference TDR. \\ \hline
+			\multirow{1}{*}{1.0} & 19-01-2019 & \tabitemNum 13. Added Bibtex for IEEE referencing. \\
+			& & \tabitemNum 14. Added CERN official Bibtex document output to reference TDR. \\ \hline
 		\end{tabularx}
 	\end{center}
 \end{table}
@@ -100,8 +91,18 @@ Experiments and there setup are detailed so they can be repeated easily in the f
 \tableofcontents{}
 \newpage
 
-\section{Previous versions of software}
-\textit{\textbf{Disclaimer: The legacy software has never reached an operational stage in the duration of Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the legacy software to run experiments.}}
+\section*{Introduction}
+This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
+
+Experiments and there setup are detailed so they can be repeated easily in the future as well as instructions how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
+
+In the introduction the rational for the project will be explained along with it's common terminology and an timeline depicting past and future events.
+
+\subsection{Alice O$^2$}
+CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a technical design report released by CERN in 2015\cite{Buncic:2011297}.
+
+\section{Original O2Balancer}
+\textit{\textbf{Disclaimer: The original O2Balancer had never reached an operational stage between the duration of the Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the original O2Balancer to run experiments.}}
 
 At the start of this project numerous previous experiments have been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these softwares worked and references them so that they can be used in the future.
 
@@ -109,24 +110,23 @@ To make sure the exact version of the software can be retrieved the git version 
 
 \begin{table}[H]
 	\begin{center}	
-		\begin{tabularx}{\textwidth}{ | l | X | l | l | }
+		\begin{tabularx}{\textwidth}{ | l | X | l | }
 			\hline
-			\textbf{Software} & \textbf{Purpose} & \textbf{Reference} & \textbf{Commit} \\ \hline
+			\textbf{Software} & \textbf{Purpose} & \textbf{Commit} \\ \hline
 			
-			O2Balancer & Binaries used in experiments containing specific algorithms to be tested. & \hyperref[sec:ref01]{O2 [1]} & 36eec89 \\ \hline
+			O2Balancer\cite{O2Balancer_github} & Binaries used in experiments containing specific algorithms to be tested. & 36eec89 \\ \hline
 			
-			BalancerScripts & Setting up nodes with Ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & \hyperref[sec:ref02]{Scripts [2]} & 99f7177 \\ \hline
+			BalancerScripts\cite{balancerscripts_github} & Setting up nodes with Ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & 99f7177 \\ \hline
 		\end{tabularx}
-		\caption{Legacy Software.}
+		\caption{Original O2Balancer Software.}
 		\label{tab:specs}
 	\end{center}
 \end{table}
 
-Newer software will likely still be distributed through git, but will be made available through the software-for-science Github organization. The repositories from previous experiments can now be on the organization project. See this link for the page: \url{https://github.com/SoftwareForScience/O2-Balancer}
+Newer software will likely still be distributed through git, but will be made available through the software-for-science Github organization. The repositories from previous experiments can now be found on the organization project\cite{software_for_science_github}.
 
-
-\section{Installation}
-Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully before. The documentation on how to install \& run the O2Balancer for the raspbian Linux distribution has been lost unfortunately. The installation instructions for CentOS can be found online on: \url{https://github.com/SoftwareForScience/O2-Balancer/blob/master/Docs/Compilation.md}
+\subsection{Installation}
+Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully done before. The documentation on how to install \& run the O2Balancer for the Raspbian Linux distribution has been lost but The installation instructions for CentOS are still available\cite{O2BalancerCompilation}.
 
 For other distributions with different package managers it should be fairly easy to replace the packages specified for the YUM package manager, however, installing all requirements for the O2Balancer can require a significant amount of system memory (between 8-16 gigabytes).
 
@@ -193,11 +193,11 @@ Each individual binary has command line arguments and a configuration file, some
 The execute.sh script will open a total of 6 windows which should appear, each running a different type of node software. In total there should be 3 EPN’s, 2 FLP’s \& 1 InformationNode.
 
 \section{Hardware Specifications}
-According to the A Large Ion Collider Experiment (ALICE) technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the O$^2$ project after long shutdown 2 (LS2). In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
+According to the Alice technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the Alice O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
 
 A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pi’s, specifically, model 3 B+.
 
-In table 1 a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for ALICE O2. These hardware differences must be taken greatly into account during the project and its various experiments.
+In table 1 a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O2. These hardware differences must be taken greatly into account during the project and its various experiments.
 
 \begin{table}[H]
 	\begin{center}
@@ -248,11 +248,11 @@ The following networking diagram shows an overview of the entire network using C
 \end{center}
 
 \subsection{New software introduction}
-An environment as similar as possible to the one used at CERN is desired, however, it has proven to be not feasible to use CentOS. This is due to the limitations the Raspberry pi version has in comparison to the CentOS x86\_64 image. One of the main reasons is the inability to switch of gcc version, normally, a tool called scl provides the switching for specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. Furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have to be built to be build from source.
+An environment as similar as possible to the one used at CERN is desired, however, it has proven to be not feasible to use CentOS. This is due to the limitations the Raspberry pi version has in comparison to the CentOS x86\_64 image. One of the main reasons is the inability to switch of gcc version, normally, a tool called SCL provides the switching for specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. Furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have to be built to be build from source.
 
-To resolve the issues with the CernOS image an alternative had to be elected. Based on previous experience Manjaro 17.1 was chosen, Manjaro provides a full features ARM image for which a tremendous amount of packages are available. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
+To resolve the issues with the CernOS image an alternative had to be elected. Based on previous experience Manjaro 17.1 was chosen, Manjaro provides a full features ARM image for which a large amount of packages are available. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
 
-Unfortunately due to the rolling release model of Manjaro even this eventually led to great trouble, which included: Broken packages, unavailable mirrors and missing kernel modules. As an alternative Raspbian stretch was chosen because of its tremendous support and large community which should allow to more easily mitigate problems.
+Unfortunately due to the rolling release model of Manjaro even this eventually led to great trouble, which included: Broken packages, unavailable mirrors and missing kernel modules. As an alternative Raspbian stretch was chosen because of its extensive support and large community which should allow to more easily mitigate problems.
 
 Based on the reports of the previous experiments a table could be compiled which compares the version of libraries from the legacy software to the versions used in the new software. It should be noted that the information about the legacy software was determined to be partially incorrect as it does not use FairMQ itself but instead relies on FairRoot.
 
@@ -450,11 +450,11 @@ The research design describes the approach of the experiments.
 \subsection{Problem Statement}
 Before diving into the research, this paragraph describes the general problem of the research.The problem is a specific problem of CERN, but the research itself should be applicable across other similar problems.
 
-\subsubsection{ALICE}
-ALICE, which stands for A Large Ion Collider Experiment, is one of many detectors mounted on the Large Hadron Collider (LHC) at CERN. ALICE is used to study states of matter in extreme energy densities. Specifically, a state of matter known as quark-gluon plasma. This state is achieved by shooting two lead ions against each other inside the LHC. This results in temperatures over 100,000 times the center of the sun.
+\subsubsection{Alice}
+Alice, which stands for A Large Ion Collider Experiment, is one of many detectors mounted on the Large Hadron Collider (LHC) at CERN. Alice is used to study states of matter in extreme energy densities. Specifically, a state of matter known as quark-gluon plasma. This state is achieved by shooting two lead ions against each other inside the LHC. This results in temperatures over 100,000 times the center of the sun.
 
 \subsubsection{Problem}
-ALICE will be upgraded their systems during the Long Shutdown 2 (LS2). This upgrade will significantly increase the data gathered. It is estimated that the collection of data will increase by a factor of 100, which roughly translates to 1.1 TB/s of continuous throughput.
+Alice will be upgraded their systems during the Long Shutdown 2 (LS2). This upgrade will significantly increase the data gathered. It is estimated that the collection of data will increase by a factor of 100, which roughly translates to 1.1 TB/s of continuous throughput.
 
 This upgrade also comes with an upgrade of the computing infrastructure capable of handling the increase in data collection; i.e. increasing and improving the amount of First Level Processors (FLPs) and Event Processing Nodes (EPNs), as well as the networking infrastructure. The computing upgrade will need to be accompanied by software to efficiently handle load balancing.
 
@@ -597,7 +597,7 @@ The results shows that the number of FLP’s has an impact on the maximum throug
 \subsection{Round Robin ICN}
 This experiment tests the achievable throughput with minimal packet loss using the same algorithm as performed with previous version of the software. Each of the available EPN’s is selected in turn by incrementing an iterator and returning it to the start if the last element has been accessed. 
 
-8 Node’s are configured during this experiment and the AliceO2 ratio of 1:6 with regards to the FLP and EPN’s is achieved. Both 50Hz and 200Hz event rates will be tested to completely cover the event operating range of the network after LS2.
+8 Node’s are configured during this experiment and the Alilice ratio of 1:6 with regards to the FLP and EPN’s is achieved. Both 50Hz and 200Hz event rates will be tested to completely cover the event operating range of the network after LS2.
 
 Each configuration is ran for 10 iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally each configuration gets one iteration where the total operation time is set to 3 minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers, however, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
 
@@ -864,7 +864,7 @@ Additional experiments with more nodes are required to better determine the effe
 % \begin{thebibliography}{}
 % 	\label{sec:ref01}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer}{O2-Balancer}
 % 	\label{sec:ref02}\bibitem{}\href{https://github.com/valvy/BalancerScripts}{Balancer Scripts}
-% 	\label{sec:ref03}\bibitem{}\href{http://cds.cern.ch/record/2011297/files/ALICE-TDR-019.pdf?version=3}{ALICE Technical Design Report}
+% 	\label{sec:ref03}\bibitem{}\href{http://cds.cern.ch/record/2011297/files/Alice-TDR-019.pdf?version=3}{Alice Technical Design Report}
 % 	\label{sec:ref04}\bibitem{}\href{https://iperf.fr/}{iPerf}
 % 	\label{sec:ref05}\bibitem{}\href{https://github.com/hexoxide/documentation/blob/master/draw-io/Network-Primary-Auxillary-Dec-14.png}{Networking diagram with auxiliary interface}
 % 	\label{sec:ref06}\bibitem{}\href{https://github.com/hexoxide/raspberry-dependency}{Raspberry Dependency}
