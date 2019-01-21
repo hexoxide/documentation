@@ -32,14 +32,15 @@
 	Bram Tukker}
 
 \date{\textbf{\today} \\
-	v1.0}
+	v1.1}
 
 \begin{document}
-
 \maketitle
+\addcontentsline{toc}{section}{\protect\numberline{}Title page} % Include table of contents without partition numbering
 \newpage
 
 \section*{Changelog}
+\addcontentsline{toc}{section}{\protect\numberline{}Changelog}
 \begin{table}[H]
 	\begin{center}	
 		\begin{tabularx}{\textwidth}{ | l | l | X | }
@@ -83,6 +84,7 @@
 			& & \tabitemNum 12. Added ZooKeeper section. \\ \hline
 			\multirow{1}{*}{1.0} & 19-01-2019 & \tabitemNum 13. Added Bibtex for IEEE referencing. \\
 			& & \tabitemNum 14. Added CERN official Bibtex document output to reference TDR. \\ \hline
+			\multirow{1}{*}{1.0} & 21-01-2019 & \tabitemNum 15. Additional bookmark references for uncounted sections. \\ \hline
 		\end{tabularx}
 	\end{center}
 \end{table}
@@ -92,16 +94,20 @@
 \newpage
 
 \section*{Introduction}
+\addcontentsline{toc}{section}{\protect\numberline{}Introduction}
 This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
 Experiments and there setup are detailed so they can be repeated easily in the future as well as instructions how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
 
-In the introduction the rational for the project will be explained along with it's common terminology and an timeline depicting past and future events.
+In the introduction the rational for the project will be explained along with it's common terminology, an overview of past and future events as well as information about previous work.
 
-\subsection{Alice O$^2$}
-CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a technical design report released by CERN in 2015\cite{Buncic:2011297}.
+\subsection*{Alice O$^2$}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Alice O$^2$}
+CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a Technical Design Report (TDR)released by CERN in 2015\cite{Buncic:2011297}.
 
-\section{Original O2Balancer}
+The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs) and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGA's they will start transmitting data to the EPNs. In turn the EPNs will receive this data and 
+
+\subsection{Original O2Balancer}
 \textit{\textbf{Disclaimer: The original O2Balancer had never reached an operational stage between the duration of the Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the original O2Balancer to run experiments.}}
 
 At the start of this project numerous previous experiments have been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these softwares worked and references them so that they can be used in the future.
@@ -114,9 +120,9 @@ To make sure the exact version of the software can be retrieved the git version 
 			\hline
 			\textbf{Software} & \textbf{Purpose} & \textbf{Commit} \\ \hline
 			
-			O2Balancer\cite{O2Balancer_github} & Binaries used in experiments containing specific algorithms to be tested. & 36eec89 \\ \hline
+			O2Balancer\cite{O2Balancer_github} & Binaries used in experiments containing specific algorithms to be tested. & \href{https://github.com/valvy/O2-Balancer/tree/36eec890a1ec7c236d2d2363c6938dcb59fb4b3e}{36eec89} \\ \hline
 			
-			BalancerScripts\cite{balancerscripts_github} & Setting up nodes with Ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & 99f7177 \\ \hline
+			BalancerScripts\cite{balancerscripts_github} & Setting up nodes with Ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & \href{https://github.com/valvy/BalancerScripts/tree/99f7177bdaa4c98db65f17070dfcab350faccdb5}{99f7177} \\ \hline
 		\end{tabularx}
 		\caption{Original O2Balancer Software.}
 		\label{tab:specs}
@@ -125,12 +131,12 @@ To make sure the exact version of the software can be retrieved the git version 
 
 Newer software will likely still be distributed through git, but will be made available through the software-for-science Github organization. The repositories from previous experiments can now be found on the organization project\cite{software_for_science_github}.
 
-\subsection{Installation}
-Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully done before. The documentation on how to install \& run the O2Balancer for the Raspbian Linux distribution has been lost but The installation instructions for CentOS are still available\cite{O2BalancerCompilation}.
+\subsubsection*{Installation}
+Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully done before. The documentation on how to install \& run the O2Balancer for the Raspbian Linux distribution has been lost but the installation instructions for CentOS are still available\cite{O2BalancerCompilation}.
 
 For other distributions with different package managers it should be fairly easy to replace the packages specified for the YUM package manager, however, installing all requirements for the O2Balancer can require a significant amount of system memory (between 8-16 gigabytes).
 
-\subsection{Verify software installation}
+\subsection*{Verify software installation}
 Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first ZooKeeper needs to be started.
 
 \begin{lstlisting}
@@ -138,7 +144,7 @@ sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./execute.sh
 \end{lstlisting}
 
-\subsection{Configuration arguments \& yaml files}
+\subsection*{Configuration arguments \& yaml files}
 Each individual binary has command line arguments and a configuration file, some of the parameters configured through these two methods might override one or another.
 
 \begin{table}[H]
@@ -181,7 +187,7 @@ Each individual binary has command line arguments and a configuration file, some
 			\textbf{Parameter} & \textbf{Data type} & \textbf{Description} \\ \hline	
 					
 			--epn-config & string & Path to yaml configuration file. \\ \hline
-			--amount-flps & int & Amount of FLP’s in this experiment the EPN will expect data from. \\ \hline
+			--amount-flps & int & Amount of FLPs in this experiment the EPN will expect data from. \\ \hline
 			--flp-port & int & The network port the EPN will listen on for data from the FLP. \\ \hline
 			--ip & string & ? \\ \hline
 		\end{tabularx}
@@ -192,7 +198,12 @@ Each individual binary has command line arguments and a configuration file, some
 
 The execute.sh script will open a total of 6 windows which should appear, each running a different type of node software. In total there should be 3 EPN’s, 2 FLP’s \& 1 InformationNode.
 
-\section{Hardware Specifications}
+\section{Hardware \& software setup}
+The pi clusters used in experiments were initially empty. So the pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up initial pi cluster setup are stored in repository that are publicly accessible and listed within this document.
+
+Raspberry pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
+
+\subsection{Hardware Specifications}
 According to the Alice technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the Alice O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
 
 A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pi’s, specifically, model 3 B+.
@@ -213,26 +224,6 @@ In table 1 a comparison of differences in hardware is detailed. It is clear that
 		\label{tab:specs}
 	\end{center}
 \end{table}
-
-
-\section{Synthetic benchmarks}
-To measure the maximum throughput that can be achieved on the network the \hyperref[sec:ref04]{iPerf3 [4]} tool was used to measure the throughput for 10 seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
-
-This 94Mbit of throughput even though the Raspberry Pi has a 1Gbit interface limited to 300Mbit due to sharing an USB 2.0 host controller was expected. This limited throughput is due to the Raspberry Pi’s being connected via a 100Mbit switch.
-
-\begin{center}
-	\begin{figure}[H]
-		\includegraphics[width=\textwidth]{images/network-benchmark}
-		\caption{Distribution of synthetic benchmark throughput.}
-		\label{fig:ssh}
-	\end{figure}
-\end{center}
-
-
-\section{Hardware \& software setup}
-The pi clusters used in experiments were initially empty. So the pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up initial pi cluster setup are stored in repository that are publicly accessible and listed within this document.
-
-Raspberry pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
 
 \subsection{Network}
 The network during the experiments consisted of 8 raspberry-pi nodes each with two network interfaces. One of these interface had an internet connection through a bridged router but was segregated from the actual internal network using Network Address Translation (NAT). The initial system design has every component installed on one raspberry pi but unfortunately some system components turned out to be incompatible with ARM based processors. An virtual machine running on an X86 based host was configured to resolve any ARM related issues, however, this host resided outside the NAT segregated network and additional steps using port forwarding and additional NAT were required to resolve them.
@@ -385,12 +376,12 @@ The decision to use Metricbeat was heavily based on it’s extensive selection o
 \end{table}
 
 
-\section{Source Code Documentation}
+\subsection{Source Code Documentation}
 Beside the regular documentation, the source code itself can also be documented. This helps understanding what the code does. This especially important for the developers, since they might have to modify the logic or add additional features.
 
 This project uses Doxygen to create the documentation. Doxygen is a library that can automatically generate documentation by scanning through the source file for specific comments.Furthermore, Doxygen can extract the file structure of the project. The output will be in the form of a HTML webpage or multiple LaTeX files. 
 
-\subsection{Generate}
+\subsubsection{Generate}
 In order to use Doxygen for this project, it should be installed on the machine beforehand. It’s important to note that Doxygen will be executed through CMake. So the path to the library should be finable for CMake.
 
 Normally, the documentation will be automatically generated when building the project. However, this can be disabled through the following command:
@@ -398,7 +389,7 @@ Normally, the documentation will be automatically generated when building the pr
 cmake -DENABLE_DOXY=OFF
 \end{lstlisting}
 
-\subsection{Access}
+\subsubsection{Access}
 After Doxygen has been executed, the documentation can be found in the ‘docs’ directory, located in the root directory of the project.
 
 To access the html version, open ‘index.html’ inside a web browser. The file is location in the ‘html’ directory. Here follows a overview of the most important sections:
@@ -410,7 +401,7 @@ To access the html version, open ‘index.html’ inside a web browser. The file
 	\item \textbf{Files \textrangle{} File List}: Overview of the project structure.
 \end{itemize}
 
-\subsection{Modify}
+\subsubsection{Modify}
 There are several ways to put comment in the source code. Here follows the template comments used in this project.
 \begin{itemize}
 \item \textbf{Block}
@@ -443,6 +434,18 @@ There are several ways to put comment in the source code. Here follows the templ
 
 For the full documentation of Doxygen on this topic, please see: \url{http://www.doxygen.nl/manual/docblocks.html}
 
+\section{Synthetic benchmarks}
+To measure the maximum throughput that can be achieved on the network the \hyperref[sec:ref04]{iPerf3 [4]} tool was used to measure the throughput for 10 seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
+
+This 94Mbit of throughput even though the Raspberry Pi has a 1Gbit interface limited to 300Mbit due to sharing an USB 2.0 host controller was expected. This limited throughput is due to the Raspberry Pi’s being connected via a 100Mbit switch.
+
+\begin{center}
+	\begin{figure}[H]
+		\includegraphics[width=\textwidth]{images/network-benchmark}
+		\caption{Distribution of synthetic benchmark throughput.}
+		\label{fig:ssh}
+	\end{figure}
+\end{center}
 
 \section{Research design}
 The research design describes the approach of the experiments.
@@ -858,6 +861,7 @@ Future experiments should take multiple iteration times into account as this par
 \section{Discussion}
 Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During this experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes a larger variety of iteration times could also benefit the results.
 
+\pdfbookmark[1]{References}{References}
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography}
 
