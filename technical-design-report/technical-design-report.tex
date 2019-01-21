@@ -105,12 +105,12 @@ In the introduction the rational for the project will be explained along with it
 \addcontentsline{toc}{subsection}{\protect\numberline{}Alice O$^2$}
 CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a Technical Design Report (TDR) released by CERN in 2015\cite{Buncic:2011297}.
 
-The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs) and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs they will start transmitting data to the EPNs. In turn the EPNs will receive this data and from the FLPs, however, to correctly process the data all FLP's need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs) transmitted from the FLP to the EPN so they can be processed into Time Frames(TF). The overall Alice O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
+The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs) and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs they will start transmitting data to the EPNs. In turn the EPNs will receive this data from the FLPs, however, to correctly process the data all FLP's need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs) transmitted from the FLP to the EPN so they can be processed into Time Frames(TF). The overall Alice O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
 
 \subsection*{Previous work}
 \addcontentsline{toc}{subsection}{\protect\numberline{}Previous work}
 
-The first work was done in 2017 and the result showed the effectiveness of a simple round-robin algorithm\cite{vander_2016}. The software implementation created to run the required experiments introduced a new third type of computing node named the Information Node. The Information Node was responsible for maintaining a list of available EPNs in the network using the ZooKeeper distributed key-value store.
+The first work was done in 2017 and the result showed the effectiveness of a simple round-robin algorithm\cite{vander_2016}. The software implementation created to run the required experiments introduced a new third type of computing node named the Information Node. The Information Node was responsible for maintaining a list of available EPNs in the network using the ZooKeeper distributed key-value store\cite{apache_zookeeper}.
 Later the ZooKeeper configuration was optimized by determining the optimal ticktime while evaluating two new algorithms: Blacklist and Re-Initialization\cite{vander_2017}. When evaluating the two algorithms it was clear that the Blacklist algorithm was superior when compared to the Re-Initialization algorithm.
 All work was based on evaluations and experiments that were run on X86 based processors but the work of Puls introduced experiments that could be run on ARM based processors, more notably Raspberry Pi clusters\cite{mitchel_2018}. These clusters could now be used as a more available and lower cost platform to run experiments on.
 
@@ -141,7 +141,7 @@ To make sure the exact version of the software can be retrieved the git version 
 			BalancerScripts\cite{balancerscripts_github} & Setting up nodes with Ansible and orchestrating an experiment. Gathering and purging log files and creating plots and graphs from log data. & \href{https://github.com/valvy/BalancerScripts/tree/99f7177bdaa4c98db65f17070dfcab350faccdb5}{99f7177} \\ \hline
 		\end{tabularx}
 		\caption{Original O2Balancer Software.}
-		\label{tab:specs}
+		\label{tab:originalbalancer}
 	\end{center}
 \end{table}
 
@@ -149,7 +149,7 @@ Newer software will likely still be distributed through git, but will be made av
 
 \subsubsection*{Installation}
 \addcontentsline{toc}{subsubsection}{\protect\numberline{}Installation}
-Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully done before. The documentation on how to install \& run the O2Balancer for the Raspbian Linux distribution has been lost but the installation instructions for CentOS are still available\cite{O2BalancerCompilation}.
+Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully done before. The documentation on how to install \& run the O2Balancer for the Raspbian Linux distribution has been lost but the installation instructions for CentOS are still available\cite{O2BalancerCompilation}. Attempts to retrieve the lost documentation by searching through Github, attempting to contact the author and even rescuing files of previously used SDCards were unsuccessful.
 
 For other distributions with different package managers it should be fairly easy to replace the packages specified for the YUM package manager, however, installing all requirements for the O2Balancer can require a significant amount of system memory (between 8-16 gigabytes).
 
@@ -167,7 +167,7 @@ sudo /usr/share/zookeeper/bin/zkServer.sh start
 Each individual binary has command line arguments and a configuration file, some of the parameters configured through these two methods might override one or another.
 
 \begin{table}[H]
-	\textbf{InformationNode}	
+	\textbf{Information Node}	
 	\begin{center}	
 		\begin{tabularx}{\textwidth}{ | l | l | X | }
 			\hline
@@ -178,7 +178,7 @@ Each individual binary has command line arguments and a configuration file, some
 			--ip & string & Ip address of ZooKeeper service \\ \hline
 		\end{tabularx}
 		\caption{Information Node parameters.}
-		\label{tab:specs}
+		\label{tab:informationnode}
 	\end{center}
 \end{table}
 
@@ -194,7 +194,7 @@ Each individual binary has command line arguments and a configuration file, some
 			--ip & string & Ip address of ZooKeeper service \\ \hline
 		\end{tabularx}
 		\caption{FLP parameters.}
-		\label{tab:specs}
+		\label{tab:flporiginal}
 	\end{center}
 \end{table}
 
@@ -211,23 +211,23 @@ Each individual binary has command line arguments and a configuration file, some
 			--ip & string & Ip address of ZooKeeper service \\ \hline
 		\end{tabularx}
 		\caption{EPN parameters.}
-		\label{tab:specs}
+		\label{tab:epnoriginal}
 	\end{center}
 \end{table}
 
-The execute.sh script will open a total of 6 windows which should appear, each running a different type of node software. In total there should be 3 EPN’s, 2 FLP’s \& 1 InformationNode.
+The execute.sh script will open a total of six windows which should appear, each running a different type of node software. In total there should be three EPNs, twp FLPs \& one Information Node.
 
 \section{Hardware \& software setup}
-The pi clusters used in experiments were initially empty. So the pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up initial pi cluster setup are stored in repository that are publicly accessible and listed within this document.
+The Raspberry Pi clusters used in experiments were initially empty. So the Raspberry Pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A Bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up initial pi cluster setup are stored in repository that are publicly accessible and listed within this document. Bash was chosen as an automation language because of its high availability on Linux distributions, Subsequently using Bash instead of Ansible allows to install dependencies on nodes which might not be accessible with Ansible such as isolated virtual machines.
 
-Raspberry pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
+Raspberry Pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
 
 \subsection{Hardware Specifications}
 According to the Alice technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the Alice O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
 
-A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pi’s, specifically, model 3 B+.
+A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pis, specifically, model 3 B+.
 
-In table 1 a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O2. These hardware differences must be taken greatly into account during the project and its various experiments.
+In \ref{tab:specs} a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
 
 \begin{table}[H]
 	\begin{center}
@@ -245,9 +245,9 @@ In table 1 a comparison of differences in hardware is detailed. It is clear that
 \end{table}
 
 \subsection{Network}
-The network during the experiments consisted of eight raspberry-pi nodes each with two network interfaces. One of these interfaces had an internet connection through a bridged router, but was segregated from the actual internal network using Network Address Translation (NAT). The initial system design has every component installed on one raspberry pi but unfortunately some system components turned out to be incompatible with ARM based processors. A virtual machine running on an X86 based host was configured to resolve any ARM related issues, however, this host resided outside the NAT segregated network and additional steps using port forwarding and additional NAT were required to resolve them.
+The network during the experiments consisted of eight Raspberry Pi nodes each with two network interfaces. One of these interfaces had an internet connection through a bridged router, but was segregated from the actual internal network using Network Address Translation (NAT). The initial system design has every component installed on one Raspberry Pi but unfortunately some system components such as Logstash turned out to be incompatible with ARM based processors. A virtual machine running on an X86 based host was configured to resolve any ARM related compatibility issues, however, this host resided outside the NAT segregated network and additional steps using port forwarding and additional NAT were required to resolve them.
 
-The following networking diagram shows an overview of the entire network using Cisco diagramming standards. In this diagram, the host at 192.168.3.2 is the virtual machine responsible for running X86 system components, while the host at 192.168.3.4 is the router responsible for segregating the raspberry-pi’s from the rest of the internal network. Each of the firewalls represent the NAT that occurs on two places in the network which will require port forwarding and tunneling later.
+The following networking diagram shows an overview of the entire network using Cisco diagramming standards. In this diagram, the host at 192.168.3.2 is the virtual machine responsible for running X86 system components, while the host at 192.168.3.4 is the router responsible for segregating the Raspberry Pis from the rest of the internal network. Each of the firewalls represent the NAT that occurs on two places in the network which will require port forwarding and tunneling later.
 
 \begin{center}
 	\begin{figure}[H]
@@ -270,24 +270,25 @@ Based on the reports of the previous experiments, a table could be compiled whic
 	\begin{center}
 		\begin{tabular}{ | l | l | l | }
 			\hline			
-			\textbf{Library/Tool} & \textbf{Version used} & \textbf{Version Legacy Software} \\ \hline
+			\textbf{Library/Tool/OS} & \textbf{Version used} & \textbf{Version Original O2Balancer} \\ \hline
 			
 			FairMQ & 1.3.6 & 1.1.5 \\ \hline
 			ZeroMQ & 4.2.5 & 4.2.1 \\ \hline
 			Zookeeper & 3.4.9 & 3.4.9 \\ \hline
 			Cmake & 3.12.4 & 3.11.0 \\ \hline
-			Boost & 1.66.0 & 1.66.0 \\ \hline
+			Boost & 1.68.0 & 1.66.0 \\ \hline
 			Yaml-cpp & NONE & 0.5.2 \\ \hline
 			FairLogger & 1.3.0 & NONE \\ \hline
 			Compiler & gcc 6.3.0 & gcc 6.3.0 \\	\hline
+			OS & Raspbian stretch & Raspbian stretch \\ \hline
 		\end{tabular}
-		\caption{The installed software dependencies on the pi’s.}
+		\caption{The installed software dependencies on the Raspberry Pis.}
 		\label{tab:librabies}
 	\end{center}
 \end{table}
 
 \subsection{New software \& system components}
-The system consist of different nodes all of which are running Debian as operating system and which are accessible using SSH. The Raspberry pi based nodes have all dependencies installed using the raspberry-dependency repository and its install scripts. The X86 based virtual machine has different software components installed which will be described later for these components an installation guide is available in the documentation repository.
+The system consist of different nodes all of which are running Debian stretch as operating system and which are accessible using SSH. The Raspberry Pi based nodes have all dependencies installed using the raspberry-dependency repository and its install scripts. The X86 based virtual machine has different software components installed which will be described later for these components an installation guide is available in the documentation repository.
 
 \begin{table}[H]
 	\begin{center}
@@ -295,10 +296,10 @@ The system consist of different nodes all of which are running Debian as operati
 			\hline			
 			\textbf{Repository} & \textbf{Purpose} \\ \hline
 			
-			\hyperref[sec:ref06]{raspberry-dependency [6]} & Detailed instructions listing required Debian packages and automated install script to install further dependencies not installed through package manager. \\ \hline
-			\hyperref[sec:ref07]{BalancerScripts2 [7]} & Small scripts that can be executed from the command line to orchestrate and/or configure software components that allow the experiment to run across different nodes. \\ \hline
-			\hyperref[sec:ref08]{O2-Balancer2 [8]} & Core binaries which run the experiments by configuring and sending data on different channels across the network. \\ \hline
-			\hyperref[sec:ref09]{Documentation [9]} & Essential documentation on the overall project as well as how to get started with the continuation of our project. \\ \hline
+			raspberry-dependency\cite{hex_dependency} & Detailed instructions listing required Debian packages and automated install script to install further dependencies not installed through package manager. \\ \hline
+			BalancerScripts2\cite{hex_scripts} & Small scripts that can be executed from the command line to orchestrate and/or configure software components that allow the experiment to run across different nodes. \\ \hline
+			O2-Balancer2\cite{hex_balancer} & Core binaries which run the experiments by configuring and sending data on different channels across the network. \\ \hline
+			Documentation\cite{hex_documentation} & Essential documentation on the overall project as well as how to get started with the continuation of our project. \\ \hline
 		\end{tabularx}
 		\caption{Overview of essential repositories.}
 		\label{tab:librabies}
@@ -390,7 +391,7 @@ The decision to use Metricbeat was heavily based on it’s extensive selection o
 			7 & Fail-over & Number of Nodes (NoN)\\ \hline
 		\end{tabular}
 		\caption{Metric that will be used in the experiments.}
-		\label{tab:specs}
+		\label{tab:metrics}
 	\end{center}
 \end{table}
 
@@ -523,7 +524,7 @@ In the tables describing the experiments the specific results which have the sam
 			\underline{200} & \underline{58750} & \underline{0.49} \\ \hline
 		\end{tabular}
 		\caption{Underlining of the synthetic benchmark equivalent allows for quickly comparing results.}
-		\label{tab:specs}
+		\label{tab:benchmark}
 	\end{center}
 \end{table}
 
@@ -550,7 +551,7 @@ The experiment should run for 30 seconds and is validated with tight timing cons
 			Arguments & \hyperref[sec:appendix01]{appendix} & FLP 3 & 192.168.1.6 \\ \hline
 		\end{tabular}
 		\caption{The specific configuration lists essential parameters as well as the specific commit referencing to the source code.}
-		\label{tab:specs}
+		\label{tab:configbaseline}
 	\end{center}
 \end{table}
 
@@ -581,7 +582,7 @@ The network is shown for each of the possible configurations during the experime
 			\includegraphics[width=0.3\textwidth]{images/network-baseline-1} & \includegraphics[width=0.3\textwidth]{images/network-baseline-2} & \includegraphics[width=0.3\textwidth]{images/network-baseline-3} \\ \hline
 		\end{tabular}
 		\caption{Network diagrams for each number of FLP configurations.}
-		\label{tab:specs}
+		\label{tab:networksetupbaseline}
 	\end{center}
 \end{table}
 
@@ -612,7 +613,7 @@ The results shows that the number of FLP’s has an impact on the maximum throug
 			3 & 19833 & 885.4333333 & 14.75 \\ \hline
 		\end{tabularx}
 		\caption{Message loss during the network baseline with 200Hz event rate.}
-		\label{tab:specs}
+		\label{tab:resultsbaseline}
 	\end{center}
 \end{table}
 
@@ -650,7 +651,7 @@ Each configuration is ran for 10 iterations to achieve a normal distribution sho
 			\multicolumn{2}{ | l | }{} & EPN 6 & 192.168.1.8 \\ \hline
 		\end{tabular}
 		\caption{The specific configuration lists essential parameters as well as the specific commit referencing to the source code.}
-		\label{tab:specs}
+		\label{tab:configroundrobin}
 	\end{center}
 \end{table}
 
@@ -679,7 +680,7 @@ A total of 14 different configurations were tested during this experiment. The m
 			14 & 32500 & 200 & 2 \\ \hline
 		\end{tabular}
 		\caption{All 14 configurations during the round robin ICN experiment.}
-		\label{tab:specs}
+		\label{tab:configoverviewround}
 	\end{center}
 \end{table}
 
@@ -714,7 +715,7 @@ To more correctly measure the effectiveness of the round robin algorithm at 50 a
 			\includegraphics[width=0.45\textwidth]{images/network-primary-interface} & \includegraphics[width=0.45\textwidth]{images/network-auxiliary-interface} \\ \hline
 		\end{tabular}
 		\caption{Network interfaces that are available to nodes.}
-		\label{tab:specs}
+		\label{tab:networkround}
 	\end{center}
 \end{table}
 
@@ -738,7 +739,7 @@ When introducing the second FLP into the network losses start to occur even at l
 			10 & 2 & 119000 & 11.11 & 0.74 \\ \hline
 		\end{tabularx}
 		\caption{Comparing loss of configurations with an 50Hz event rate.}
-		\label{tab:specs}
+		\label{tab:resultsroundone}
 	\end{center}
 \end{table}
 
@@ -761,7 +762,7 @@ The losses with 2 FLP’s are higher with an event rate of 200Hz all of the loss
 			14 & 2 & 32500 & 85.56 & 1.42 \\ \hline
 		\end{tabularx}
 		\caption{Comparing loss of configurations with an 200Hz event rate.}
-		\label{tab:specs}
+		\label{tab:resultsroundtwo}
 	\end{center}
 \end{table}
 
@@ -801,7 +802,7 @@ Similar configurations should result in similar loss even if the duration is var
 			14 & 1.39 & 0.21 \\ \hline
 		\end{tabular}
 		\caption{Effects of different iteration times on the percentage of loss during experiments.}
-		\label{tab:specs}
+		\label{tab:resultsroundabsolute}
 	\end{center}
 \end{table}
 
