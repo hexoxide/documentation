@@ -159,7 +159,7 @@ For other distributions with different package managers it should be fairly easy
 \addcontentsline{toc}{subsubsection}{\protect\numberline{}Verify software installation}
 Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first ZooKeeper needs to be started.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./execute.sh
 \end{lstlisting}
@@ -409,7 +409,7 @@ This project uses Doxygen to create the documentation. Doxygen is a library that
 In order to use Doxygen for this project, it should be installed on the machine beforehand. It’s important to note that Doxygen will be executed through CMake. So the path to the library should be findable for CMake.
 
 Normally, the documentation will be automatically generated when building the project. However, this can be disabled through the following command:
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 cmake -DENABLE_DOXY=OFF
 \end{lstlisting}
 
@@ -426,10 +426,10 @@ To access the HTML version, open ‘index.html’ inside a web browser. The file
 \end{itemize}
 
 \subsubsection{Modify}
-There are several ways for adding comments in the source code which will be detected by doxygen. Here follows the template comments used in this project.
+There are several ways to add comments in the source code which will be detected by doxygen. Here follows the template comments used in this project.
 \begin{itemize}
 \item \textbf{Block}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /*
 * [description]
 * [more description]
@@ -438,13 +438,13 @@ There are several ways for adding comments in the source code which will be dete
 \end{lstlisting}
 
 \item \textbf{Brief description (for classes)}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /// [description]
 [entity]
 \end{lstlisting}
 
 \item \textbf{One line}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /** [description] */
 [entity]
 \end{lstlisting}
@@ -498,11 +498,11 @@ In order to answer the main research question, a few subquestion are established
 
 
 \section{Experiments}
-Experiments are documented in 4 parts starting with a general introduction / description. After that the configuration is detailed and the necessary information is provided to revalidate the experiment. An operational overview and description is given and finally the results are measured. The experiments will only detail preliminary results and a conclusive total overview of results and how they evaluate together can be found in the results chapter. 
+Experiments are documented in 4 parts starting with a general introduction/description. After that, the configuration is detailed and the necessary information is provided to revalidate the experiment. An operational overview and description is given and finally the results are measured. The experiments will only detail preliminary results and a conclusive total overview of results. How they evaluate together can be found in the results chapter. 
 
 The necessary information to revalidate an experiment can be found by using the references in the configuration section.
 
-In the tables describing the experiments the specific results which have the same throughput as the maximum determined in the synthetic benchmark will be underlined. The following short table is an example of that underlining.
+In the tables describing the experiments, the specific results which have the same throughput as the maximum determined in the synthetic benchmark will be underlined. The following short table is an example of that underlining.
 
 \begin{table}[H]
 	\textbf{Example for underlining synthetic benchmark equivalent throughput}
@@ -520,11 +520,11 @@ In the tables describing the experiments the specific results which have the sam
 \end{table}
 
 \subsection{Network throughput baseline}
-This experiments tests network throughput using the FairMQ application layers after having measured the maximum throughput that could be achieved on the specific hardware using the synthetic benchmark. The absolute maximum throughput that can be achieved is 94Mbit as demonstrated with iperf3.
+This experiment tests network throughput using the FairMQ application layers after having measured the maximum throughput that could be achieved on the specific hardware using the synthetic benchmark. The absolute maximum throughput that can be achieved is 94Mbit as demonstrated with iperf3.
 
-The 94 Mbit throughput can be translated into a 11.75 Mbyte throughput. With the message rate of 200Hz it can be determined that the network should be able to sustain a message size of 58750 bytes. The number of FLPs and the message size was varied during this experiment.
+The 94 Mbit throughput can be translated into a 11.75 Mbyte throughput. With the message rate of 200Hz, it can be determined that the network should be able to sustain a message size of 58750 bytes. The number of FLPs and the message size was varied during this experiment.
 
-The experiment should run for 30 seconds and is validated with tight timing constraints, the total experiment time should be no less than 29.7 seconds and no more than 30.3. Failure of a run to be within these timing constraints means it will not be used as part of the results.
+The experiment should run for 30 seconds and is validated with tight timing constraints. The total experiment time should be no less than 29.7 seconds and no more than 30.3. Failure of a run to be within these timing constraints means it will not be used as part of the results.
 
 \begin{center}
 	\begin{figure}[H]
@@ -554,7 +554,7 @@ The experiment should run for 30 seconds and is validated with tight timing cons
 	\end{center}
 \end{table}
 
-The experiment consisted of nine different configurations were both the message size and the number of FLPs in the network were varied. Each configuration was run for 30 iterations so additional statistical analysis could be performed if required.
+The experiment consisted of nine different configurations were both the message size and the number of FLPs in the network were varied. Each configuration was run for 30 iterations, so additional statistical analysis could be performed if required.
 
 \begin{table}[H]
 	\textbf{Configuration overview}
@@ -579,9 +579,9 @@ The experiment consisted of nine different configurations were both the message 
 \end{table}
 
 \subsubsection{Operation}
-The operation of the experiment involved a two step procedure, were in the first step the binaries are configured and in the second step the actual experiment is run. During this experiment the ICN it’s available channels are hard coded into the binary and could only be changed at compile time. 
+The operation of the experiment involved a two step procedure, where in the first step the binaries are configured and, in the second step the actual experiment is run. During this experiment, the ICN’s available channels are hard coded into the binary and could only be changed at compile time. 
 
-The three different core Binaries are started at the same time and the EPN \& FLP will wait for incoming messages while the ICN starts counting down a ten second wait period. After the grace period the ICN will send the EPN channel configuration to all FLPs. After the message has been send the ICN will wait an additional two seconds for the FLPs to configure the newly received channels. When the ICN has waited for the FLPs to be configured the experiment will run.
+The three different core Binaries are started at the same time and the EPN \& FLP will wait for incoming messages while the ICN starts counting down a ten second wait period. After the grace period, the ICN will send the EPN channel configuration to all FLPs. After the message has been sent, the ICN will wait an additional two seconds for the FLPs to configure the newly received channels. When the ICN has waited for the FLPs to be configured, the experiment will run.
 
 \begin{center}
 	\begin{figure}[H]
@@ -591,7 +591,7 @@ The three different core Binaries are started at the same time and the EPN \& FL
 	\end{figure}
 \end{center}
 
-The network is shown for each of the possible configurations during the experiment which indicates the physical location of each node in the network. All connections between devices are 100Mbit.
+The network is shown for each of the possible configurations during the experiment, which indicates the physical location of each node in the network. All connections between devices are 100Mbit.
 
 \begin{table}[H]
 	\textbf{Network setup}
@@ -608,11 +608,11 @@ The network is shown for each of the possible configurations during the experime
 \end{table}
 
 \subsubsection{Results}
-During the synthetic benchmarks the maximum network bandwidth was determined to be 94Mbit. In accordance to this synthetic throughput a maximum message size of 58750 bytes and one FLP is expected to have close to zero or zero loss. In a similar fashion a message size of 29375 bytes with two FLPs was expected to have similar loss. 
+During the synthetic benchmarks, the maximum network bandwidth was determined to be 94Mbit. In accordance to this synthetic throughput, a maximum message size of 58750 bytes and one FLP is expected to have close to zero or zero loss. In a similar fashion, a message size of 29375 bytes with two FLPs was expected to have similar loss. 
 
-During the experiment it became clear that having multiple FLPs further limits the amount of available bandwidth available for throughput between FLPs and EPNs. Attempting to sustain a throughput of 93 Mbits with more than one FLP results in significant loss of messages, furthermore, increasing the message size beyond the equivalent of 93 Mbit throughput also results in significant loss of messages. 93 Mbit is close but not equivalent of 94 Mbit this lower throughput is likely due to the network traffic from ICN to FLP \& from EPN to ICN because these network connections aren’t present in the synthetic benchmark.
+During the experiment it became clear that having multiple FLPs further limits the amount of available bandwidth available for throughput between FLPs and EPNs. Attempting to sustain a throughput of 93 Mbits with more than one FLP results in significant loss of messages. Furthermore, increasing the message size beyond the equivalent of 93 Mbit throughput also results in significant loss of messages. 93 Mbit is close but not equivalent of 94 Mbit. This lower throughput is likely due to the network traffic from ICN to FLP \& from EPN to ICN because these network connections aren’t present in the synthetic benchmark.
 
-The results shows that the number of FLPs has an impact on the maximum throughput that can be achieved and that this should be taken into account in further experiments. 
+The results shows that the number of FLPs has an impact on the maximum throughput that can be achieved and should be taken into account in further experiments. 
 
 \begin{table}[H]
 	\textbf{Mean message loss per configuration - 6000 messages at an rate of 200Hz (30 seconds)}
@@ -643,15 +643,40 @@ This experiment tests the achievable throughput with minimal packet loss using t
 
 Eight nodes are configured during this experiment and the node ratio of 1:6 with regards to the FLP and EPNs is achieved. Both 50Hz and 200Hz event rates will be tested to completely cover the event operating range of the network after LS2.
 
-Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers, however, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
+Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally, each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers. However, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
 
-\begin{center}
-	\begin{figure}[H]
-		\includegraphics[width=\textwidth]{images/determine-channel}
-		\caption{Channel determination for round robin.}
-		\label{fig:ssh}
-	\end{figure}
-\end{center}
+
+\begin{lstlisting}[language=C++]
+/**
+ * Determines the next appropriate channel the FLP should use 
+ * to send data to the EPN.
+ * @return The desired channel.
+ */
+uint64_t InformationControlNode::determineChannel()
+{
+	uint64_t index = 0;
+
+	// currentChannel initialization 
+	if(currentChannel == nullptr)
+	{
+		currentChannel = channels.at(0);
+	}
+
+	if(currentChannel == channels.back())
+	{
+		currentChannel = channels.front();
+	}
+	else 
+	{
+		auto it = std::find(channels.begin(), channels.end(), currentChannel);
+		std::advance (it, 1);
+		index = std::distance(channels.begin(), it);
+		currentChannel = channels.at(index);
+	}
+
+	return currentChannel->index;
+}
+\end{lstlisting}
 
 \subsubsection{Configuration}
 
@@ -705,12 +730,12 @@ A total of fourteen different configurations were tested during this experiment.
 	\end{center}
 \end{table}
 
-In the results section the configuration numbers will be reused as a method to uniquely identify configurations as a result it should easier to cross-reference and get a good overview of how configurations compare.
+In the results section the configuration numbers will be reused as a method to uniquely identify configurations and as a result it should be easier to cross-reference and get a good overview of how configurations compare.
 
 \subsubsection{Operation}
-The operation is similar to the network baseline experiment but additional automatic configuration has been added to simplify the process. The overall operation still consist of a two step procedure but the EPNs have additional features that allow them to report their listening channel to the ICN. This allows to ICN to maintain a list of EPNs that are available which can then be iterated over in a round robin fashion.
+The operation is similar to the network baseline experiment but additional automatic configuration has been added to simplify the process. The overall operation still consist of a two step procedure, but the EPNs have additional features that allow them to report their listening channel to the ICN. This allows to ICN to maintain a list of EPNs that are available which can then be iterated over in a round robin fashion.
 
-During the PreRun step the EPN will wait ten seconds after being started and will then proceed by sending its channel data to the ICN. This initial delay allows ICN to be started without very tight timing constraints as delays between nodes could differ in a network. The ICN is configured to be dormant until it receives the first channel. After receiving the first channel it will allow for additional channels to be added during a ten second period. After this period it will forward all the channels to the FLPs in the network and it will wait two seconds before continuing. During this two second period the FLPs will have time to configure their channels. With the FLP their channels configured the PreRun step is finished and the run step is entered.
+During the PreRun step, the EPN will wait ten seconds after being started and will then proceed by sending its channel data to the ICN. This initial delay allows the ICN to be started without very tight timing constraints as delays between nodes could differ in a network. The ICN is configured to be dormant until it receives the first channel. After receiving the first channel it will allow for additional channels to be added during a ten second period. After this period it will forward all the channels to the FLPs in the network and it will wait two seconds before continuing. During this two second period, the FLPs will have time to configure their channels. With the FLP channels configured, the PreRun step is finished and the run step is entered.
 
 \begin{center}
 	\begin{figure}[H]
@@ -720,11 +745,11 @@ During the PreRun step the EPN will wait ten seconds after being started and wil
 	\end{figure}
 \end{center}
 
-During the run step the ICN will monitor the rate of transmission. Whenever the FLP should send the next message to the currently selected EPN the ICN will send an message to the FLP. This message will contain an heartbeat ID as well as the selected EPN that should receive the message. The ICN will then increment the list of EPNs as a means to select the next one for the following message and the FLPs will send the configured amount of bytes to the EPN. When the EPN has successfully received the messages from the FLPs it will send an acknowledgement to the ICN. Should an EPN receive to message’s with different heartbeat ID’s it will discard the messages and trigger an out-of-order error as a result it will not send an acknowledgement to the ICN for that heartbeat.
+During the run step, the ICN will monitor the rate of transmission. Whenever the FLP should send the next message to the currently selected EPN, the ICN will send a message to the FLP. This message will contain a heartbeat ID as well as the selected EPN that should receive the message. The ICN will then increment the list of EPNs as a means to select the next one for the following message and the FLPs will send the configured amount of bytes to the EPN. When the EPN has successfully received the messages from the FLPs, it will send an acknowledgement to the ICN. Should an EPN receive two messages with different heartbeat ID’s, it will discard the messages and trigger an out-of-order error. As a result, it will not send an acknowledgement to the ICN for that heartbeat.
 
-This run step procedure allows to discriminate between messages that were lost due to high bandwidth \& network buffers or due to timing errors. The expectation is that the increased event rate of 200Hz will increase the amount of out-of-order / timing errors with an equivalent total bandwidth.
+This run step procedure allows differentiation between messages that were lost due to high bandwidth \& network buffers or due to timing errors. The expectation is that the increased event rate of 200Hz will increase the amount of out-of-order/timing errors with an equivalent total bandwidth.
 
-To more correctly measure the effectiveness of the round robin algorithm at 50 and 200Hz all network communication between ICN to FLP and EPN to ICN will be transmitted on the auxiliary networking interface.
+To more correctly measure the effectiveness of the round robin algorithm at 50 and 200Hz, all network communication between ICN to FLP and EPN to ICN will be transmitted on the auxiliary networking interface.
 
 \begin{table}[H]
 	\textbf{Network setup}
@@ -741,9 +766,9 @@ To more correctly measure the effectiveness of the round robin algorithm at 50 a
 \end{table}
 
 \subsubsection{Results}
-Losses across different configurations were there is one FLP in the network are extremely similar to the network throughput baseline experiment. This is likely due to the inability to cause out-of-order errors as there is only a single FLP in the network.
+Losses across different configurations where there is one FLP in the network are extremely similar to the network throughput baseline experiment. This is likely due to the inability to cause out-of-order errors as there is only a single FLP in the network.
 
-When introducing the second FLP into the network losses start to occur even at lower throughput than the synthetic benchmark.
+When introducing the second FLP into the network losses start to occur at even lower throughput than with the synthetic benchmark.
 
 \begin{table}[H]
 	\textbf{Mean message loss - 1500 messages sent at an rate of 50hz (30 seconds)}	
@@ -764,7 +789,7 @@ When introducing the second FLP into the network losses start to occur even at l
 	\end{center}
 \end{table}
 
-The losses with two FLPs are higher with an event rate of 200Hz all of the losses were due to out-of-order errors directly  showing that the tighter timing constraints increase the amount of errors that occur at the same bandwidth.
+The losses with two FLPs are higher with an event rate of 200Hz. All of the losses were due to out-of-order errors, directly showing that the tighter timing constraints increase the amount of errors that occur at the same bandwidth.
 
 \begin{table}[H]
 	\textbf{Mean message loss - 6000 messages sent at an rate of 200hz (30 seconds)}	
@@ -788,7 +813,7 @@ The losses with two FLPs are higher with an event rate of 200Hz all of the losse
 \end{table}
 
 \subsection{Comparing long \& short runs}
-Similar configurations should result in similar loss even if the duration is varied, on the condition that the duration of the test is sufficient to correctly measure the desired characteristics. The results from comparing short \& long runs, however, show that there is a measurable difference. The results highlighted in red have a higher long run percentage loss than the short run equivalent, while the results highlighted in green have a lower long run percentage loss over the short run.
+Similar configurations should result in similar loss, even if the duration is varied, on the condition that the duration of the test is sufficient to correctly measure the desired characteristics. The results from comparing short \& long runs, however, show that there is a measurable difference. The results highlighted in red have a higher long run percentage loss than the short run equivalent, while the results highlighted in green have a lower long run percentage loss over the short run.
 
 \begin{table}[H]
 	\textbf{Comparing losses of 30 second (short) \& 3 minute (long) runsw}	
@@ -827,9 +852,9 @@ Similar configurations should result in similar loss even if the duration is var
 	\end{center}
 \end{table}
 
-In all the green highlighted configurations there were two FLPs in the network moreover all the losses were due to so called out-of-order errors. An out-of-order errors occurs when an EPN receives two messages from the FLPs but each one with a different heartbeat, as a result the EPN invalidates the data and discards it so it can continue receiving new messages. Out-of-order errors are more likely to occur with tighter timing constraints or with fewer EPN’s in the network. The lower percentage loss on long runs might indicate that most of the out-of-order events occur during the beginning of the experiment and eventually settle out or at least become less likely to occur.
+In all the green highlighted configurations, there were two FLPs in the network. Moreover, all the losses were due to so-called out-of-order errors. An out-of-order error occurs when an EPN receives two messages from the FLPs but each one with a different heartbeat. As a result, the EPN invalidates the data and discards it so it can continue receiving new messages. Out-of-order errors are more likely to occur with tighter timing constraints or with fewer EPNs in the network. The lower percentage loss on long runs might indicate that most of the out-of-order events occur during the beginning of the experiment and eventually settle out or at least become less frequent.
 
-In all the red highlighted configurations the total size of accumulated messages multiplied by the rate of events exceeded the determined maximum throughput as determined in the synthetic benchmark. The results show that in the short run exceeded these network limits does not result in detected losses, however, in the long runs this does result in losses. This is likely due to network buffers which are temporarily capable of resolving the exceeded limits.
+In all the red highlighted configurations, the total size of accumulated messages multiplied by the rate of events exceeded the determined maximum throughput as determined in the synthetic benchmark. The results show that in the short run, exceeding these network limits does not result in detected losses. However, in the long runs this does result in losses. This is likely due to network buffers which are temporarily capable of resolving the exceeded limits.
 
 
 \section{O2Balancer2 Zookeeper version}
@@ -886,12 +911,12 @@ Finally the variation of iteration time from 30 seconds to 3 minutes has shown t
 \end{center}
 
 \subsection{Metricbeat}
-During the round robin ICN experiments metricbeat was used on the raspberry pi nodes to record metric data, unfortunately the results from this data proved unusable due to unreliability as well as the metricbeat process requiring a lot of system resources. The metricbeat process occasionally caused 65\% CPU utilization, additionally many graphs tended to be, making it hard to correlate them. Many of the nodes stopped correctly reporting metrics after a period of time which required the restarting of the metricbeat process to be resolved.
+During the round robin ICN experiments, Metricbeat was used on the Raspberry Pi nodes to record metric data. Unfortunately, the results from this data proved unusable due to unreliability as well as the Metricbeat process requiring a lot of system resources. The Metricbeat process occasionally caused 65\% CPU utilization. Additionally, many graphs tended to be unreliable, making it hard to correlate them. Many of the nodes stopped correctly reporting metrics after a period of time which required the restarting of the Metricbeat process to be resolved.
 
 \begin{center}
 	\begin{figure}[H]
 		\includegraphics[width=\textwidth]{images/metric-load}
-		\caption{Graph depicting the occasional 65\% CPU utilization which was determined to be metricbeat using tools as Htop.}
+		\caption{Graph depicting the occasional 65\% CPU utilization which was determined to be Metricbeat using tools as Htop.}
 		\label{fig:ssh}
 	\end{figure}
 \end{center}
@@ -899,7 +924,7 @@ During the round robin ICN experiments metricbeat was used on the raspberry pi n
 \section{Conclusion}
 200Hz event rates should be manageable with only a small reduction in throughput when using the round robin algorithm, additional experiments with more nodes are required.
 
-Metricbeat could be useful but it requires a lot of effort to be correctly configured in combination with Logstash, Elasticsearch \& Kibana. However, it might be unfeasible to run this service on ARM based nodes (such as Raspberry PIs) and additional work is required to determine if it is feasible.
+Metricbeat could be useful but it requires a lot of effort to be correctly configured in combination with Logstash, Elasticsearch \& Kibana. However, it could be unfeasible to run this service on ARM based nodes (such as Raspberry Pis) and additional work is required to determine if it is feasible.
 
 Future experiments should take multiple iteration times into account as this parameter can affect results. Perhaps previous experiments should be repeated with different iteration times.
 
@@ -935,28 +960,28 @@ XXXXXX = Message size \\
 YYY = Number of FLPs in the network
 
 \subsubsection{Commands for experiment with single network card}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=0,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://192.168.1.4:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --severity trace --verbosity high --id 1 --num-flp YYY --channel-config name=1,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://192.168.1.4:5000
 \end{lstlisting}
 
 \subsubsection{Commands for experiment with dual network cards}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=0,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.138:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --severity trace --verbosity high --id 1 --num-flp YYY --channel-config name=1,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.138:5000
 \end{lstlisting}
 
@@ -968,52 +993,52 @@ ZZZ = Number of iterations \\
 WWW = EPN number
 
 \subsubsection{Build configuration}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_DOXY=false ..
 make 
 make test
 \end{lstlisting}
 
 \subsubsection{1 FLP}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --control static --severity trace --verbosity high --id 1 --iterations ZZZ --rate YYY --channel-config name=broadcast,type=pub,method=bind,rateLogging=1,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=1,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.1:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 1 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
 
 \subsubsection{2 FLP}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --control static --severity trace --verbosity high --id 1 --iterations ZZZ --rate YYY --channel-config name=broadcast,type=pub,method=bind,rateLogging=1,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=1,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.1:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 2 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
 
 \subsubsection{Commands for experiment with round-robin whitelist Zookeeper }
 git checkout zookeepertje
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 1:
 sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 2 and 5:
 ./flp --severity trace --verbosity high --id 1 --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://<ip address of icn>:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 3,4,6,7 and 8
 ./epn --severity trace --verbosity high --id 1 --channel-config name=1,type=pull,method=bind,address=tcp://<own ip address>:5555,rateLogging=1
 \end{lstlisting}
