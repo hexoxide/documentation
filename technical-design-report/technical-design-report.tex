@@ -339,12 +339,12 @@ Metricbeat can be used to gather statistics of the nodes. This data can be sent 
 
 To easily visualize the data, Kibana can be used to retrieve the data from Elasticsearch. This service should also run on the ICN. By port forwarding the service on an external machine, Kibana can be viewed inside a web browser.
 
-Due to incompatibilities with Logstash on ARM, both Logstash and ElasticSearch were installed on the X86 virtual machine. The overall experience with MELK was very poor. The exact problems, discoveries and conclusion will be discussed later.
+Due to incompatibilities with Logstash on ARM, both Logstash and ElasticSearch were installed on the X86 virtual machine. The overall experience with MELK was very poor.
 
 Kibana is part of the ELK stack, which is used to properly interpret metrics from the hardware and network during experiments. ELK is short for Elasticsearch, Logstash and Kibana. These three pieces of software process incoming data from hardware components running Metricbeat.
 
 \subsubsection{Elasticsearch}
-Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the core of the Elastic Stack, it centrally stores the data.
+Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the core of the Elastic Stack, it centrally stores the data \cite{melk_2019}.
 
 \subsubsection{Logstash}
 Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to Elasticsearch.
