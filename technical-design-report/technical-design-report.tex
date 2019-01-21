@@ -26,9 +26,9 @@
 	\large Software for Science - CERN Load Balancing}
 
 \author{\textbf{Team 6 Hexoxide} \\
-	Eloy Maduro Clement \\
+	Eloy Maduro Clément \\
 	Geoffrey van Driessel \\
-	Corne Lukken \\
+	Corné Lukken \\
 	Bram Tukker}
 
 \date{\textbf{\today} \\
@@ -97,21 +97,21 @@
 \addcontentsline{toc}{section}{\protect\numberline{}Introduction}
 This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
-Experiments and there setup are detailed so they can be repeated easily in the future as well as instructions how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
+Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
 
-In the introduction the rational for the project will be explained along with it's common terminology, an overview of past and future events as well as information about previous work.
+The rationale for the project will be explained in the introduction along with its common terminology, an overview of past and future events as well as information about previous work.
 
 \subsection*{Alice O$^2$}
 \addcontentsline{toc}{subsection}{\protect\numberline{}Alice O$^2$}
-CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a Technical Design Report (TDR) released by CERN in 2015\cite{Buncic:2011297}.
+CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC, along with its various detectors, is currently receiving a scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 and as a result, the amount of data created by the detector will increase. However, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation of the upgrade, the Alice O$^2$ project was documented in a Technical Design Report (TDR) released by CERN in 2015\cite{Buncic:2011297}.
 
-The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs) and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs they will start transmitting data to the EPNs. In turn the EPNs will receive this data and from the FLPs, however, to correctly process the data all FLP's need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs) transmitted from the FLP to the EPN so they can be processed into Time Frames(TF). The overall Alice O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
+The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs), and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs, they will start transmitting data to the EPNs. In turn, the EPNs will receive this data and from the FLPs, however, to correctly process the data all FLP's need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs), transmitted from the FLPs to the EPNs so they can be processed into Time Frames(TF). The overall Alice O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
 
 \subsection*{Previous work}
 \addcontentsline{toc}{subsection}{\protect\numberline{}Previous work}
 
 The first work was done in 2017 and the result showed the effectiveness of a simple round-robin algorithm\cite{vander_2016}. The software implementation created to run the required experiments introduced a new third type of computing node named the Information Node. The Information Node was responsible for maintaining a list of available EPNs in the network using the ZooKeeper distributed key-value store.
-Later the ZooKeeper configuration was optimized by determining the optimal ticktime while evaluating two new algorithms: Blacklist and Re-Initialization\cite{vander_2017}. When evaluating the two algorithms it was clear that the Blacklist algorithm was superior when compared to the Re-Initialization algorithm.
+Later on, the ZooKeeper configuration was optimized by determining the optimal ticktime while evaluating two new algorithms: Blacklist and Re-Initialization\cite{vander_2017}. Upon evaluating the two algorithms, it became clear that the Blacklist algorithm was superior when compared to the Re-Initialization algorithm.
 All work was based on evaluations and experiments that were run on X86 based processors but the work of Puls introduced experiments that could be run on ARM based processors, more notably Raspberry Pi clusters\cite{mitchel_2018}. These clusters could now be used as a more available and lower cost platform to run experiments on.
 
 \begin{center}
@@ -126,9 +126,9 @@ All work was based on evaluations and experiments that were run on X86 based pro
 \addcontentsline{toc}{subsection}{\protect\numberline{}Original O2Balancer}
 \textit{\textbf{Disclaimer: The original O2Balancer had never reached an operational stage between the duration of the Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the original O2Balancer to run experiments.}}
 
-At the start of this project numerous previous experiments have been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these softwares worked and references them so that they can be used in the future.
+At the start of this project, several experiments had previously been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these software packages worked and reference them, so that they can be used in the future.
 
-To make sure the exact version of the software can be retrieved the git version commit hashes are listed. To checkout a specific commit hash from a repository execute “git checkout COMMIT-HASH”.
+To make sure the exact version of the software can be retrieved, the git version commit hashes are listed. To checkout a specific commit hash from a repository, execute “git checkout COMMIT-HASH”.
 
 \begin{table}[H]
 	\begin{center}	
@@ -227,7 +227,7 @@ According to the Alice technical design report \cite{Buncic:2011297}, there will
 
 A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pi’s, specifically, model 3 B+.
 
-In table 1 a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O2. These hardware differences must be taken greatly into account during the project and its various experiments.
+In table 1 a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
 
 \begin{table}[H]
 	\begin{center}
@@ -274,7 +274,7 @@ Based on the reports of the previous experiments, a table could be compiled whic
 			
 			FairMQ & 1.3.6 & 1.1.5 \\ \hline
 			ZeroMQ & 4.2.5 & 4.2.1 \\ \hline
-			Zookeeper & 3.4.9 & 3.4.9 \\ \hline
+			ZooKeeper & 3.4.9 & 3.4.9 \\ \hline
 			Cmake & 3.12.4 & 3.11.0 \\ \hline
 			Boost & 1.66.0 & 1.66.0 \\ \hline
 			Yaml-cpp & NONE & 0.5.2 \\ \hline
@@ -348,10 +348,10 @@ Logstash is an open source, server-side data processing pipeline that ingests da
 Kibana is able to visualize Elasticsearch data and navigate the Elastic Stack, and can do so using a wide range of visualizations.
 
 \subsubsection{Metricbeat}
-Collect metrics from systems and services. From CPU to memory, Redis to NGINX, and much more, Metricbeat is a lightweight way to send system and service statistics. However, in the setup for running O2-Balancer experiments, the data gathered is limited to metrics such as CPU load (in percentages), memory usage (in MegaBytes), and network throughput (in KiloBytes per second).
+Collect metrics from systems and services. From CPU to memory, Redis to NGINX, and much more, Metricbeat is a lightweight way to send system and service statistics. However, in the setup for running O2Balancer experiments, the data gathered is limited to metrics such as CPU load (in percentages), memory usage (in MegaBytes), and network throughput (in KiloBytes per second).
 
 \subsubsection{Data}
-While Metricbeat offers a wide range of data to send, in the setup for running O2-Balancer experiments, the data gathered is limited to metrics such as:
+While Metricbeat offers a wide range of data to send, in the setup for running O2Balancer experiments, the data gathered is limited to metrics such as:
 \begin{itemize}
 	\itemsep 0em
 	\item CPU load (in percentages)
@@ -476,7 +476,7 @@ Before diving into the research, this paragraph describes the general problem of
 Alice, which stands for A Large Ion Collider Experiment, is one of many detectors mounted on the Large Hadron Collider (LHC) at CERN. Alice is used to study states of matter in extreme energy densities. Specifically, a state of matter known as quark-gluon plasma. This state is achieved by shooting two lead ions against each other inside the LHC. This results in temperatures over 100,000 times the center of the sun.
 
 \subsubsection{Problem}
-Alice will be upgraded their systems during the Long Shutdown 2 (LS2). This upgrade will significantly increase the data gathered. It is estimated that the collection of data will increase by a factor of 100, which roughly translates to 1.1 TB/s of continuous throughput.
+Alice will upgrade their systems during the Long Shutdown 2 (LS2). This upgrade will significantly increase the data gathered. It is estimated that the collection of data will increase by a factor of 100, which roughly translates to 1.1 TB/s of continuous throughput.
 
 This upgrade also comes with an upgrade of the computing infrastructure capable of handling the increase in data collection; i.e. increasing and improving the amount of First Level Processors (FLPs) and Event Processing Nodes (EPNs), as well as the networking infrastructure. The computing upgrade will need to be accompanied by software to efficiently handle load balancing.
 
@@ -810,7 +810,7 @@ In all the green highlighted configurations there were 2 FLP’s in the network 
 In all the red highlighted configurations the total size of accumulated messages multiplied by the rate of events exceeded the determined maximum throughput as determined in the synthetic benchmark. The results show that in the short run exceeded these network limits does not result in detected losses, however, in the long runs this does result in losses. This is likely due to network buffers which are temporarily capable of resolving the exceeded limits.
 
 
-\section{Zookeeper throughput experiment}
+\section{ZooKeeper throughput experiment}
 The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [12]} has the following throughput:
 \begin{itemize}
 	\itemsep 0em
@@ -896,7 +896,7 @@ Additional experiments with more nodes are required to better determine the effe
 % 	\label{sec:ref09}\bibitem{}\href{https://github.com/hexoxide/documentation}{Documentation}	
 % 	\label{sec:ref10}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/commits/experiment-1}{O2-Balancer 2 Commits}
 % 	\label{sec:ref11}\bibitem{}\href{https://github.com/hexoxide/documentation/tree/cdbb643c6ebc875e73e8c1c2433c6d14cda05aca}{Documentation cdbb643}
-% 	\label{sec:ref12}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/tree/zookeepertje}{O2-Balancer 2 Zookeepertje}
+% 	\label{sec:ref12}\bibitem{}\href{https://github.com/hexoxide/O2-Balancer2/tree/zookeepertje}{O2-Balancer 2 ZooKeepertje}
 % 	\label{sec:ref13}\bibitem{}\href{https://github.com/valvy/}{GitHub Valvy Profile}
 % \end{thebibliography}
 
