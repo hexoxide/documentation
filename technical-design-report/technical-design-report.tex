@@ -159,7 +159,7 @@ For other distributions with different package managers it should be fairly easy
 \addcontentsline{toc}{subsubsection}{\protect\numberline{}Verify software installation}
 Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first ZooKeeper needs to be started.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./execute.sh
 \end{lstlisting}
@@ -409,7 +409,7 @@ This project uses Doxygen to create the documentation. Doxygen is a library that
 In order to use Doxygen for this project, it should be installed on the machine beforehand. It’s important to note that Doxygen will be executed through CMake. So the path to the library should be findable for CMake.
 
 Normally, the documentation will be automatically generated when building the project. However, this can be disabled through the following command:
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 cmake -DENABLE_DOXY=OFF
 \end{lstlisting}
 
@@ -429,7 +429,7 @@ To access the HTML version, open ‘index.html’ inside a web browser. The file
 There are several ways to add comments in the source code which will be detected by doxygen. Here follows the template comments used in this project.
 \begin{itemize}
 \item \textbf{Block}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /*
 * [description]
 * [more description]
@@ -438,13 +438,13 @@ There are several ways to add comments in the source code which will be detected
 \end{lstlisting}
 
 \item \textbf{Brief description (for classes)}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /// [description]
 [entity]
 \end{lstlisting}
 
 \item \textbf{One line}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /** [description] */
 [entity]
 \end{lstlisting}
@@ -472,21 +472,7 @@ The 94Mbit of throughput was expected. Even though the Raspberry Pi has a 1Gbit 
 \end{center}
 
 \section{Research design}
-The research design describes the approach of the experiments.
-
-\subsection{Problem Statement}
-Before diving into the research, this paragraph describes the general problem of the research. The problem is a specific problem of CERN, but the research itself should be applicable across other similar problems.
-
-\subsubsection{Alice}
-Alice, which stands for A Large Ion Collider Experiment, is one of many detectors mounted on the Large Hadron Collider (LHC) at CERN. Alice is used to study states of matter in extreme energy densities. Specifically, a state of matter known as quark-gluon plasma. This state is achieved by shooting two lead ions against each other inside the LHC. This results in temperatures over 100,000 times the center of the sun.
-
-\subsubsection{Problem}
-Alice will upgrade their systems during the Long Shutdown 2 (LS2). This upgrade will significantly increase the data gathered. It is estimated that the collection of data will increase by a factor of 100, which roughly translates to 1.1 TB/s of continuous throughput.
-
-This upgrade also comes with an upgrade of the computing infrastructure capable of handling the increase in data collection; i.e. increasing and improving the amount of First Level Processors (FLPs) and Event Processing Nodes (EPNs), as well as the networking infrastructure. The computing upgrade will need to be accompanied by software to efficiently handle load balancing.
-
-\subsection{Research Framework}
-The research framework below shows the resources (existing research, et cetera) used to construct the conceptual model with which the objects of research (Sub-TimeFrames, Fair MQ, et cetera) were put to the test. Results of those test were finally gathered and used to make recommendations.
+Before diving into the research, this paragraph describes the general problem of the research. The problem is a specific problem of CERN, but the research itself should be applicable to other similar problems.
 
 \begin{center}
 	\begin{figure}[H]
@@ -496,11 +482,12 @@ The research framework below shows the resources (existing research, et cetera) 
 	\end{figure}
 \end{center}
 
-\subsection{Main Research Question}
-Based on the problem statement and the research framework, a main research question can be established. The focus is on trying new approaches for the load balancer, with the goal of improving the overall performance and usability. A comparison will be made between these approaches to give an overview of the advantages and disadvantages. That’s why the main research question is defined as follows: \textit{“How do different load-balancing algorithms compare in transferring a continuous data stream across parallel many-to-one streams?”}
+\subsection{Main Research Question} 
+The focus of the project is to deliver a scalable, performent and autonoom load balancing system. And also to conduct experiments to gather information about the reliability of the system.
+At the initial state of the project we defined the main research question as following: \textit{“How do different load-balancing algorithms compare in transferring a continuous data stream across parallel many-to-one streams?”}
 
 \subsection{Sub Research Question}
-In order to answer the main research question, a few sub question are established to divide the whole research into smaller parts. This will be handy, especially for the different algorithms that will be used for each approach. These are the sub questions:
+In order to answer the main research question, a few subquestion are established to divide the whole project into smaller parts. These are the subquestions:
 \begin{itemize}
 	\itemsep 0em
 	\item Which algorithms have been developed already and what are the results?
@@ -871,7 +858,7 @@ In all the red highlighted configurations, the total size of accumulated message
 
 
 \section{O2Balancer2 Zookeeper version}
-The second system we provide is the round-robin whitelist loadbalancer using \hyperref[sec:ref12]{Zookeeper [12]} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
+The second system we provide is the round-robin whitelist loadbalancer, using \hyperref[sec:ref12]{Zookeeper [12]} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
 
 It is imported to note that the ICN is much different in this system than in the O2Balancer2 ICN version. The ICN in this implementation \textbf{only} sends heartbeats to the FLPs.
 
@@ -924,12 +911,12 @@ Finally the variation of iteration time from 30 seconds to 3 minutes has shown t
 \end{center}
 
 \subsection{Metricbeat}
-During the round robin ICN experiments, Metricbeat was used on the Raspberry pi nodes to record metric data. Unfortunately, the results from this data proved unusable due to unreliability as well as the metricbeat process requiring a lot of system resources. The metricbeat process occasionally caused 65\% CPU utilization. Additionally, many graphs tended to be unreliable, making it hard to correlate them. Many of the nodes stopped correctly reporting metrics after a period of time which required the restarting of the metricbeat process to be resolved.
+During the round robin ICN experiments, Metricbeat was used on the Raspberry Pi nodes to record metric data. Unfortunately, the results from this data proved unusable due to unreliability as well as the Metricbeat process requiring a lot of system resources. The Metricbeat process occasionally caused 65\% CPU utilization. Additionally, many graphs tended to be unreliable, making it hard to correlate them. Many of the nodes stopped correctly reporting metrics after a period of time which required the restarting of the Metricbeat process to be resolved.
 
 \begin{center}
 	\begin{figure}[H]
 		\includegraphics[width=\textwidth]{images/metric-load}
-		\caption{Graph depicting the occasional 65\% CPU utilization which was determined to be metricbeat using tools as Htop.}
+		\caption{Graph depicting the occasional 65\% CPU utilization which was determined to be Metricbeat using tools as Htop.}
 		\label{fig:ssh}
 	\end{figure}
 \end{center}
@@ -937,7 +924,7 @@ During the round robin ICN experiments, Metricbeat was used on the Raspberry pi 
 \section{Conclusion}
 200Hz event rates should be manageable with only a small reduction in throughput when using the round robin algorithm, additional experiments with more nodes are required.
 
-Metricbeat could be useful but it requires a lot of effort to be correctly configured in combination with Logstash, Elasticsearch \& Kibana. However, it might be unfeasible to run this service on ARM based nodes (such as Raspberry Pis) and additional work is required to determine if it is feasible.
+Metricbeat could be useful but it requires a lot of effort to be correctly configured in combination with Logstash, Elasticsearch \& Kibana. However, it could be unfeasible to run this service on ARM based nodes (such as Raspberry Pis) and additional work is required to determine if it is feasible.
 
 Future experiments should take multiple iteration times into account as this parameter can affect results. Perhaps previous experiments should be repeated with different iteration times.
 
@@ -973,28 +960,28 @@ XXXXXX = Message size \\
 YYY = Number of FLPs in the network
 
 \subsubsection{Commands for experiment with single network card}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=0,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://192.168.1.4:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --severity trace --verbosity high --id 1 --num-flp YYY --channel-config name=1,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://192.168.1.4:5000
 \end{lstlisting}
 
 \subsubsection{Commands for experiment with dual network cards}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=0,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.138:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --severity trace --verbosity high --id 1 --num-flp YYY --channel-config name=1,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.138:5000
 \end{lstlisting}
 
@@ -1006,52 +993,52 @@ ZZZ = Number of iterations \\
 WWW = EPN number
 
 \subsubsection{Build configuration}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_DOXY=false ..
 make 
 make test
 \end{lstlisting}
 
 \subsubsection{1 FLP}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --control static --severity trace --verbosity high --id 1 --iterations ZZZ --rate YYY --channel-config name=broadcast,type=pub,method=bind,rateLogging=1,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=1,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.1:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 1 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
 
 \subsubsection{2 FLP}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --control static --severity trace --verbosity high --id 1 --iterations ZZZ --rate YYY --channel-config name=broadcast,type=pub,method=bind,rateLogging=1,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=1,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.1:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 2 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
 
 \subsubsection{Commands for experiment with round-robin whitelist Zookeeper }
 git checkout zookeepertje
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 1:
 sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 2 and 5:
 ./flp --severity trace --verbosity high --id 1 --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://<ip address of icn>:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 3,4,6,7 and 8
 ./epn --severity trace --verbosity high --id 1 --channel-config name=1,type=pull,method=bind,address=tcp://<own ip address>:5555,rateLogging=1
 \end{lstlisting}
