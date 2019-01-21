@@ -97,7 +97,7 @@
 \addcontentsline{toc}{section}{\protect\numberline{}Introduction}
 This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
-Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
+Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experimenting and make new discoveries. This new software has evolved from previous work which will be briefly touched upon. It is important to note that there is a distinction between the two new systems we provide: the ICN and the Zookeeper implementation.
 
 The rationale for the project will be explained in the introduction along with its common terminology, an overview of past and future events as well as information about previous work.
 
@@ -292,7 +292,7 @@ Based on the reports of the previous experiments, a table could be compiled whic
 \subsection{New software \& system components}
 The system consist of different nodes all of which are running Debian stretch as operating system and which are accessible using SSH. The Raspberry Pi based nodes have all dependencies installed using the raspberry-dependency repository and its install scripts. The X86 based virtual machine has different software components installed which will be described later for these components an installation guide is available in the documentation repository.
 
-Among the set of nodes is one new node known as the InformationControlNode (ICN) this node will replace the Information Node used in the original O2Balancer. The new ICN node will have additional functionality compared to the original Information Node which is the reason behind the new name. The other nodes in the new software such as the FLP and EPN will have the same functionality as in the original O2Balancer.
+Among the set of nodes is one new node known as the Information Control Node (ICN). This node will replace the Information Node used in the original O2Balancer. The new ICN node will have additional functionality compared to the original Information Node which is the reason behind the new name. The other nodes in the new software such as the FLP and EPN will have the same functionality as in the original O2Balancer.
 
 \begin{table}[H]
 	\begin{center}
@@ -311,12 +311,12 @@ Among the set of nodes is one new node known as the InformationControlNode (ICN)
 \end{table}
 
 \subsection{Installation}
-To ensure the reproducibility of experiments executed by the new software, a bash script\cite{hex_dependency} has been developed which will install all the dependencies automatically, while using Bash instead of Ansible ensures the availability of the install script on isolated platforms. The installation instructions are based on Debian distributions and additional effort could be required to be able to use them on different distributions. Along this installation scripts additional documentation is available in the documentation repository which will allow to configure the X86 based system components.
+To ensure the reproducibility of experiments executed by the new software, a Bash script\cite{hex_dependency} has been developed which will install all the dependencies automatically. Using Bash instead of Ansible ensures the availability of the install script on isolated platforms. The installation instructions are based on Debian distributions and additional effort could be required to be able to use them on different distributions. Along this installation scripts additional documentation is available in the documentation repository which will allow to configure the X86 based system components.
 
 \subsection{SSH}
-Remote access to each of the individual nodes is done via SSH in the setup the first node is used a portal to access the other nodes in the network. Using a single node as portal limits the amount of ports that needs to be forwarded to the outside network. Additionally an SSH key from the portal node can be added to every node so that SSH logins no longer require a username \& password after logging into the portal.
+Remote access to each of the individual nodes is done via SSH in the setup the first node is used a portal to access the other nodes in the network. Using a single node as portal limits the amount of ports that need to be forwarded to the outside network. Additionally, an SSH key from the portal node can be added to every node as known host so that SSH logins no longer require a username \& password after logging into the portal.
 
-The SSH configuration also uses SSH tunneling this is done to allow access to an web based dashboard running on the X86 based virtual machine.
+The SSH configuration also uses SSH tunneling. This is done to allow access to a web based dashboard running on the X86 based virtual machine.
 
 \begin{center}
 	\begin{figure}[H]
@@ -330,21 +330,21 @@ The SSH configuration also uses SSH tunneling this is done to allow access to an
 To run and configure tests on the pi clusters, some things will need to be configured. Ansible will be used to handle the configuration of each pi, defining which experiments to run and with which parameters to do so. Ansible allows to apply different parameters to different categories of hosts.
 
 \subsection{MELK}
-Metricbeat can be used to gather statistics of the nodes. This data can be send to Logstash, which should have run on the ICN. Then, Logstash can output the data in two ways:
+Metricbeat can be used to gather statistics of the nodes. This data can be sent to Logstash, which should have run on the ICN. Then, Logstash can output the data in two ways:
 \begin{itemize}
 	\itemsep 0em
 	\item Plain text file
 	\item Elasticsearch
 \end{itemize}
 
-To easily visualize the data, Kibana can be used to retrieve the data from Elasticsearch. This service should also run on the icn. By port forwarding the service on an external machine, Kibana can be viewed inside a web browser.
+To easily visualize the data, Kibana can be used to retrieve the data from Elasticsearch. This service should also run on the ICN. By port forwarding the service on an external machine, Kibana can be viewed inside a web browser.
 
-Due to incompatibilities with Logstash on ARM both Logstash and ElasticSearch were installed on the X86 virtual machine. The overall experience with MELK was very poor the exact problems, discoveries and conclusion will be discussed later.
+Due to incompatibilities with Logstash on ARM, both Logstash and ElasticSearch were installed on the X86 virtual machine. The overall experience with MELK was very poor. The exact problems, discoveries and conclusion will be discussed later.
 
 Kibana is part of the ELK stack, which is used to properly interpret metrics from the hardware and network during experiments. ELK is short for Elasticsearch, Logstash and Kibana. These three pieces of software process incoming data from hardware components running Metricbeat.
 
 \subsubsection{Elasticsearch}
-Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the heart of the Elastic Stack, it centrally stores the data.
+Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the core of the Elastic Stack, it centrally stores the data.
 
 \subsubsection{Logstash}
 Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to Elasticsearch.
@@ -401,9 +401,9 @@ The decision to use Metricbeat was heavily based on it’s extensive selection o
 
 
 \subsection{Source code documentation}
-Beside the regular documentation, the source code itself can also be documented. This helps understanding what the code does. This especially important for the developers, since they might have to modify the logic or add additional features.
+Beside the regular documentation, the source code itself can also be documented. This helps to understand what the code does. This is especially important for the developers, since they might have to modify the logic or add additional features.
 
-This project uses Doxygen to create the documentation. Doxygen is a library that can automatically generate documentation by scanning through the source file for specific comments.Furthermore, Doxygen can extract the file structure of the project. The output will be in the form of a HTML webpage or multiple LaTeX files. 
+This project uses Doxygen to create the documentation. Doxygen is a library that can automatically generate documentation by scanning through the source file for specific comments.Furthermore, Doxygen can extract the file structure of the project. The output will be in the form of an HTML webpage or multiple LaTeX files. 
 
 \subsubsection{Generate}
 In order to use Doxygen for this project, it should be installed on the machine beforehand. It’s important to note that Doxygen will be executed through CMake. So the path to the library should be findable for CMake.
@@ -416,7 +416,7 @@ cmake -DENABLE_DOXY=OFF
 \subsubsection{Access}
 After Doxygen has been executed, the documentation can be found in the ‘docs’ directory, located in the root directory of the project.
 
-To access the html version, open ‘index.html’ inside a web browser. The file is location in the ‘html’ directory. Here follows a overview of the most important sections:
+To access the HTML version, open ‘index.html’ inside a web browser. The file is located in the ‘html’ directory. Here follows a overview of the most important sections:
 \begin{itemize}
 	\itemsep 0em
 	\item \textbf{Main Page}: Contains the README.md file of the project.
@@ -426,7 +426,7 @@ To access the html version, open ‘index.html’ inside a web browser. The file
 \end{itemize}
 
 \subsubsection{Modify}
-There are several ways to put comment in the source code. Here follows the template comments used in this project.
+There are several ways for adding comments in the source code which will be detected by doxygen. Here follows the template comments used in this project.
 \begin{itemize}
 \item \textbf{Block}
 \begin{lstlisting}
@@ -456,12 +456,12 @@ There are several ways to put comment in the source code. Here follows the templ
 
 \end{itemize}
 
-For the full documentation of Doxygen on this topic, please see: \url{http://www.doxygen.nl/manual/docblocks.html}
+For the full documentation of Doxygen, please see: \url{http://www.doxygen.nl/manual/docblocks.html}
 
 \section{Synthetic benchmarks}
-To measure the maximum throughput that can be achieved on the network the \hyperref[sec:ref04]{iPerf3 [4]} tool was used to measure the throughput for 10 seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
+To measure the maximum throughput that can be achieved on the network, the \hyperref[sec:ref04]{iPerf3 [4]} tool was used to measure the throughput for 10 seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
 
-This 94Mbit of throughput even though the Raspberry Pi has a 1Gbit interface limited to 300Mbit due to sharing an USB 2.0 host controller was expected. This limited throughput is due to the Raspberry Pi’s being connected via a 100Mbit switch.
+The 94Mbit of throughput was expected. Even though the Raspberry Pi has a 1Gbit interface, this is limited to 300Mbit due to sharing a USB 2.0 host controller. This limited throughput is due to the Raspberry Pi’s being connected via a 100Mbit switch.
 
 \begin{center}
 	\begin{figure}[H]
@@ -846,7 +846,7 @@ In all the red highlighted configurations the total size of accumulated messages
 
 
 \section{ZooKeeper throughput experiment}
-The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [12]} has the following throughput:
+The round-robin whitelist implementation using \hyperref[sec:ref12]{zookeeper [12]} has the following throughput:
 \begin{itemize}
 	\itemsep 0em
 	\item Using packet size: 232000 bytes
@@ -856,7 +856,7 @@ The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [1
 
 The implementation offers a robust system: the order of which flp/epn/icn starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again.
 
-The blacklist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
+The whitelist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
 
 Multiple small improvements have been made, such as: no overriding of fairmq classes(so that is compatible to further versions), flp only retrieves zk values of new epns (instead of all epns with each watcher trigger), uses watchers, can detect restarted nodes, relieved network load by using direct channels from flp to icn (instead of using zookeeper), and finally a simpler file structure.
 
@@ -914,6 +914,7 @@ Future experiments should take multiple iteration times into account as this par
 
 \section{Discussion}
 Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During this experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes a larger variety of iteration times could also benefit the results.
+An important aspect of the zookeeper system that could be tested in a further study is whether all the flps send all the subtime frames of a heartbeat to the same epn, and if they keep doing that with a prolonged run-time (1 hour+). Also a reliability comparison between the two systems used (Zookeeper vs ICN) would be interesting.
 
 \pdfbookmark[1]{References}{References}
 \bibliographystyle{IEEEtran}
@@ -1007,5 +1008,24 @@ make test
 \begin{lstlisting}
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 2 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
+
+\subsubsection{Commands for experiment with round-robin whitelist Zookeeper }
+git checkout zookeepertje
+\begin{lstlisting}
+node 1:
+sudo /usr/share/zookeeper/bin/zkServer.sh start
+./icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005
+\end{lstlisting}
+
+\begin{lstlisting}
+node 2 and 5:
+./flp --severity trace --verbosity high --id 1 --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://<ip address of icn>:5005
+\end{lstlisting}
+
+\begin{lstlisting}
+node 3,4,6,7 and 8
+./epn --severity trace --verbosity high --id 1 --channel-config name=1,type=pull,method=bind,address=tcp://<own ip address>:5555,rateLogging=1
+\end{lstlisting}
+
 
 \end{document}
