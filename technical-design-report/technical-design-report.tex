@@ -97,7 +97,7 @@
 \addcontentsline{toc}{section}{\protect\numberline{}Introduction}
 This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
-Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
+Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experimenting and make new discoveries. This new software has evolved from previous work which will be briefly touched upon. It is important to note that there is a distinction between the two new systems we provide: the ICN and the Zookeeper implementation.
 
 The rationale for the project will be explained in the introduction along with its common terminology, an overview of past and future events as well as information about previous work.
 
@@ -539,6 +539,14 @@ The 94 Mbit throughput can be translated into a 11.75 Mbyte throughput. With the
 
 The experiment should run for 30 seconds and is validated with tight timing constraints. The total experiment time should be no less than 29.7 seconds and no more than 30.3. Failure of a run to be within these timing constraints means it will not be used as part of the results.
 
+\begin{center}
+	\begin{figure}[H]
+		\includegraphics[width=\textwidth]{images/Results-gathering-flow-diagram.png}
+		\caption{Flow diagram of run step during experiments}
+		\label{fig:FlowDiagram}
+	\end{figure}
+\end{center}
+
 \subsubsection{Configuration}
 
 \begin{table}[H]
@@ -578,7 +586,7 @@ The experiment consisted of nine different configurations were both the message 
 			\underline{8} & \underline{19583} & \underline{200} & \underline{3} \\ \hline
 			9 & 19833 & 200 & 3 \\ \hline
 		\end{tabular}
-		\caption{All 9 configurations during the network baseline experiment.}
+		\caption{All nine configurations during the network baseline experiment.}
 		\label{tab:configoverviewround}
 	\end{center}
 \end{table}
@@ -650,13 +658,38 @@ Eight nodes are configured during this experiment and the node ratio of 1:6 with
 
 Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally, each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers. However, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
 
-\begin{center}
-	\begin{figure}[H]
-		\includegraphics[width=\textwidth]{images/determine-channel}
-		\caption{Channel determination for round robin.}
-		\label{fig:ssh}
-	\end{figure}
-\end{center}
+
+\begin{lstlisting}[language=C++]
+/**
+ * Determines the next appropriate channel the FLP should use 
+ * to send data to the EPN.
+ * @return The desired channel.
+ */
+uint64_t InformationControlNode::determineChannel()
+{
+	uint64_t index = 0;
+
+	// currentChannel initialization 
+	if(currentChannel == nullptr)
+	{
+		currentChannel = channels.at(0);
+	}
+
+	if(currentChannel == channels.back())
+	{
+		currentChannel = channels.front();
+	}
+	else 
+	{
+		auto it = std::find(channels.begin(), channels.end(), currentChannel);
+		std::advance (it, 1);
+		index = std::distance(channels.begin(), it);
+		currentChannel = channels.at(index);
+	}
+
+	return currentChannel->index;
+}
+\end{lstlisting}
 
 \subsubsection{Configuration}
 
@@ -837,21 +870,25 @@ In all the green highlighted configurations, there were two FLPs in the network.
 In all the red highlighted configurations, the total size of accumulated messages multiplied by the rate of events exceeded the determined maximum throughput as determined in the synthetic benchmark. The results show that in the short run, exceeding these network limits does not result in detected losses. However, in the long runs this does result in losses. This is likely due to network buffers which are temporarily capable of resolving the exceeded limits.
 
 
-\section{ZooKeeper throughput experiment}
-The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [12]} has the following throughput:
+\section{O2Balancer2 Zookeeper version}
+The second system we provide is the round-robin whitelist loadbalancer using \hyperref[sec:ref12]{Zookeeper [12]} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
+
+It is imported to note that the ICN is much different in this system than in the O2Balancer2 ICN version. The ICN in this implementation \textbf{only} sends heartbeats to the FLPs.
+
+The whitelist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
+
+Multiple small improvements have been made, such as: no overriding of fairmq classes(so that is compatible to further versions), FLP only retrieves zk values of new EPNs (instead of all EPNs with each watcher trigger), uses watchers, can detect restarted nodes, relieved network load by using direct channels from FLP to ICN(instead of using zookeeper), and finally a simpler file structure.
+
+The software can be found on the \hyperref[sec:ref12]{zookeepertje [12]} branch from the O2Balancer2 repo. Unfortunately there are no experiments conducted with this zookeeper implementation due to time constraints.
+
+\subsection{ZooKeeper throughput experiment} 
+The round-robin whitelist implementation using Zookeeper has the following throughput:
 \begin{itemize}
 	\itemsep 0em
 	\item Using packet size: 232000 bytes
 	\item 2 flps - 5 epns - 60 tfps - measured input: 18 packets (3,67MB per epn = 18,8 MB/s total)
 	\item 1 flps - 5 epns - 60 tfps - measured input: 12,5 packets (2,16 MB per epn = 10,8 MB/s total)
 \end{itemize}
-
-The implementation offers a robust system: the order of which flp/epn/icn starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again.
-
-The blacklist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
-
-Multiple small improvements have been made, such as: no overriding of fairmq classes(so that is compatible to further versions), flp only retrieves zk values of new epns (instead of all epns with each watcher trigger), uses watchers, can detect restarted nodes, relieved network load by using direct channels from flp to icn (instead of using zookeeper), and finally a simpler file structure.
-
 
 \section{Results}
 In this section the results from different experiments are compared as well as data from the synthetic benchmark. The information will be used to draw conclusion and recommend further work.
@@ -905,7 +942,8 @@ Metricbeat could be useful but it requires a lot of effort to be correctly confi
 Future experiments should take multiple iteration times into account as this parameter can affect results. Perhaps previous experiments should be repeated with different iteration times.
 
 \section{Discussion}
-Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During these experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes, a larger variety of iteration times could also benefit the results.
+Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During this experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes a larger variety of iteration times could also benefit the results.
+An important aspect of the zookeeper system that could be tested in a further study is whether all the flps send all the subtime frames of a heartbeat to the same epn, and if they keep doing that with a prolonged run-time (1 hour+). Also a reliability comparison between the two systems used (Zookeeper vs ICN) would be interesting.
 
 \pdfbookmark[1]{References}{References}
 \bibliographystyle{IEEEtran}
@@ -999,5 +1037,24 @@ make test
 \begin{lstlisting}
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 2 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
+
+\subsubsection{Commands for experiment with round-robin whitelist Zookeeper }
+git checkout zookeepertje
+\begin{lstlisting}
+node 1:
+sudo /usr/share/zookeeper/bin/zkServer.sh start
+./icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005
+\end{lstlisting}
+
+\begin{lstlisting}
+node 2 and 5:
+./flp --severity trace --verbosity high --id 1 --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://<ip address of icn>:5005
+\end{lstlisting}
+
+\begin{lstlisting}
+node 3,4,6,7 and 8
+./epn --severity trace --verbosity high --id 1 --channel-config name=1,type=pull,method=bind,address=tcp://<own ip address>:5555,rateLogging=1
+\end{lstlisting}
+
 
 \end{document}
