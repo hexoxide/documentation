@@ -846,11 +846,11 @@ The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [1
 	\item 1 flps - 5 epns - 60 tfps - measured input: 12,5 packets (2,16 MB per epn = 10,8 MB/s total)
 \end{itemize}
 
-The implementation offers a robust system: the order of which flp/epn/icn startup or shutdown has no impact on the system. With a failover of any of the three nodes the system will continue working, after a reset the node will again be included in the system.
+The implementation offers a robust system: the order of which flp/epn/icn starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again.
 
-The blacklist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. Instead of editing fairmq source code to allow for removing a channel from the channel list contained in MQProgOptions, compared to the new version that maintains a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stays unused until the node comes back online in which case the node will be added to the list of online nodes. 
+The blacklist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
 
-Multiple small improvements have been made, such as: no source-code editing of fairmq (so that is compatible to further versions), flp only retrieves zk values of new epns (not all), uses watchers, can detect restarted nodes, relieved network load by using direct channels from flp to icn (instead of using zookeeper), finally better naming and file structure in general.
+Multiple small improvements have been made, such as: no overriding of fairmq classes(so that is compatible to further versions), flp only retrieves zk values of new epns (instead of all epns with each watcher trigger), uses watchers, can detect restarted nodes, relieved network load by using direct channels from flp to icn (instead of using zookeeper), and finally a simpler file structure.
 
 
 \section{Results}
