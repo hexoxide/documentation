@@ -658,13 +658,38 @@ Eight nodes are configured during this experiment and the node ratio of 1:6 with
 
 Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers, however, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
 
-\begin{center}
-	\begin{figure}[H]
-		\includegraphics[width=\textwidth]{images/determine-channel}
-		\caption{Channel determination for round robin.}
-		\label{fig:ssh}
-	\end{figure}
-\end{center}
+
+\begin{lstlisting}[language=C++]
+/**
+ * Determines the next appropriate channel the FLP should use 
+ * to send data to the EPN.
+ * @return The desired channel.
+ */
+uint64_t InformationControlNode::determineChannel()
+{
+	uint64_t index = 0;
+
+	// currentChannel initialization 
+	if(currentChannel == nullptr)
+	{
+		currentChannel = channels.at(0);
+	}
+
+	if(currentChannel == channels.back())
+	{
+		currentChannel = channels.front();
+	}
+	else 
+	{
+		auto it = std::find(channels.begin(), channels.end(), currentChannel);
+		std::advance (it, 1);
+		index = std::distance(channels.begin(), it);
+		currentChannel = channels.at(index);
+	}
+
+	return currentChannel->index;
+}
+\end{lstlisting}
 
 \subsubsection{Configuration}
 
