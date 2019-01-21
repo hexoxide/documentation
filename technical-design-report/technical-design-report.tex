@@ -76,7 +76,7 @@
 			& & \tabitemNum 4. Described software and system components. \\
 			& & \tabitemNum 5. Generalized SSH description. \\
 			& & \tabitemNum 6. Described Metricbeat and it’s metrics. \\
-			& & \tabitemNum 7. Explained table underlinement. \\
+			& & \tabitemNum 7. Explained table underlining. \\
 			& & \tabitemNum 8. Describe the run operation for the round robin ICN experiment. \\
 			& & \tabitemNum 9. Discussion \& results. \\
 			& & \tabitemNum 10. MELK-installation-guide reference added \\
@@ -103,11 +103,27 @@ In the introduction the rational for the project will be explained along with it
 
 \subsection*{Alice O$^2$}
 \addcontentsline{toc}{subsection}{\protect\numberline{}Alice O$^2$}
-CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a Technical Design Report (TDR)released by CERN in 2015\cite{Buncic:2011297}.
+CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC among with its various detectors is currently receiving an scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 as a result the amount of data created by the detector will increase, however, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation to the upgrade the Alice O$^2$ project was documented in a Technical Design Report (TDR) released by CERN in 2015\cite{Buncic:2011297}.
 
-The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs) and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGA's they will start transmitting data to the EPNs. In turn the EPNs will receive this data and 
+The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs) and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs they will start transmitting data to the EPNs. In turn the EPNs will receive this data and from the FLPs, however, to correctly process the data all FLP's need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs) transmitted from the FLP to the EPN so they can be processed into Time Frames(TF). The overall Alice O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
 
-\subsection{Original O2Balancer}
+\subsection*{Previous work}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Previous work}
+
+The first work was done in 2017 and the result showed the effectiveness of a simple round-robin algorithm\cite{vander_2016}. The software implementation created to run the required experiments introduced a new third type of computing node named the Information Node. The Information Node was responsible for maintaining a list of available EPNs in the network using the ZooKeeper distributed key-value store.
+Later the ZooKeeper configuration was optimized by determining the optimal ticktime while evaluating two new algorithms: Blacklist and Re-Initialization\cite{vander_2017}. When evaluating the two algorithms it was clear that the Blacklist algorithm was superior when compared to the Re-Initialization algorithm.
+All work was based on evaluations and experiments that were run on X86 based processors but the work of Puls introduced experiments that could be run on ARM based processors, more notably Raspberry Pi clusters\cite{mitchel_2018}. These clusters could now be used as a more available and lower cost platform to run experiments on.
+
+\begin{center}
+	\begin{figure}[H]
+		\includegraphics[width=\textwidth]{images/TimelineProject.png}
+		\caption{Overview of past and future events with regards to the CERN Load Balancing project.}
+		\label{fig:timeline}
+	\end{figure}
+\end{center}
+
+\subsection*{Original O2Balancer}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Original O2Balancer}
 \textit{\textbf{Disclaimer: The original O2Balancer had never reached an operational stage between the duration of the Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the original O2Balancer to run experiments.}}
 
 At the start of this project numerous previous experiments have been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these softwares worked and references them so that they can be used in the future.
@@ -129,14 +145,16 @@ To make sure the exact version of the software can be retrieved the git version 
 	\end{center}
 \end{table}
 
-Newer software will likely still be distributed through git, but will be made available through the software-for-science Github organization. The repositories from previous experiments can now be found on the organization project\cite{software_for_science_github}.
+Newer software will likely still be distributed through git, but will be made available through the software-for-science Github organization. The repositories from previous experiments can be found on the organization project\cite{software_for_science_github}.
 
 \subsubsection*{Installation}
+\addcontentsline{toc}{subsubsection}{\protect\numberline{}Installation}
 Documentation for the O2Balancer was based upon CentOS, as a result it might be difficult to get the software running for other types of Linux distributions although it has been successfully done before. The documentation on how to install \& run the O2Balancer for the Raspbian Linux distribution has been lost but the installation instructions for CentOS are still available\cite{O2BalancerCompilation}.
 
 For other distributions with different package managers it should be fairly easy to replace the packages specified for the YUM package manager, however, installing all requirements for the O2Balancer can require a significant amount of system memory (between 8-16 gigabytes).
 
 \subsection*{Verify software installation}
+\addcontentsline{toc}{subsubsection}{\protect\numberline{}Verify software installation}
 Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first ZooKeeper needs to be started.
 
 \begin{lstlisting}
@@ -145,6 +163,7 @@ sudo /usr/share/zookeeper/bin/zkServer.sh start
 \end{lstlisting}
 
 \subsection*{Configuration arguments \& yaml files}
+\addcontentsline{toc}{subsubsection}{\protect\numberline{}Configuration arguments \& yaml files}
 Each individual binary has command line arguments and a configuration file, some of the parameters configured through these two methods might override one or another.
 
 \begin{table}[H]
@@ -154,9 +173,9 @@ Each individual binary has command line arguments and a configuration file, some
 			\hline
 			\textbf{Parameter} & \textbf{Data type} & \textbf{Description} \\ \hline
 					
-			--info-config & string & Path to yaml configuration file. \\ \hline			
+			--info-config & string & Path to yaml configuration file. \\ \hline
 			--sample-size & int & Size of individual packets send between FLP \& EPN in MB. \\ \hline
-			--ip & string & ? \\ \hline
+			--ip & string & Ip address of ZooKeeper service \\ \hline
 		\end{tabularx}
 		\caption{Information Node parameters.}
 		\label{tab:specs}
@@ -168,11 +187,11 @@ Each individual binary has command line arguments and a configuration file, some
 	\begin{center}	
 		\begin{tabularx}{\textwidth}{ | l | l | X | }
 			\hline
-			\textbf{Parameter} & \textbf{Data type} & \textbf{Description} \\ \hline	
+			\textbf{Parameter} & \textbf{Data type} & \textbf{Description} \\ \hline
 					
-			--flp-config & string & Path to yaml configuration file. \\ \hline			
-			--restartFairRoot & boolean & ? \\ \hline
-			--ip & string & ? \\ \hline
+			--flp-config & string & Path to yaml configuration file. \\ \hline
+			--restartFairRoot & boolean & Runs reinitialization algorithm if true \\ \hline
+			--ip & string & Ip address of ZooKeeper service \\ \hline
 		\end{tabularx}
 		\caption{FLP parameters.}
 		\label{tab:specs}
@@ -184,12 +203,12 @@ Each individual binary has command line arguments and a configuration file, some
 	\begin{center}	
 		\begin{tabularx}{\textwidth}{ | l | l | X | }
 			\hline
-			\textbf{Parameter} & \textbf{Data type} & \textbf{Description} \\ \hline	
+			\textbf{Parameter} & \textbf{Data type} & \textbf{Description} \\ \hline
 					
 			--epn-config & string & Path to yaml configuration file. \\ \hline
 			--amount-flps & int & Amount of FLPs in this experiment the EPN will expect data from. \\ \hline
 			--flp-port & int & The network port the EPN will listen on for data from the FLP. \\ \hline
-			--ip & string & ? \\ \hline
+			--ip & string & Ip address of ZooKeeper service \\ \hline
 		\end{tabularx}
 		\caption{EPN parameters.}
 		\label{tab:specs}
@@ -376,7 +395,7 @@ The decision to use Metricbeat was heavily based on it’s extensive selection o
 \end{table}
 
 
-\subsection{Source Code Documentation}
+\subsection{Source code documentation}
 Beside the regular documentation, the source code itself can also be documented. This helps understanding what the code does. This especially important for the developers, since they might have to modify the logic or add additional features.
 
 This project uses Doxygen to create the documentation. Doxygen is a library that can automatically generate documentation by scanning through the source file for specific comments.Furthermore, Doxygen can extract the file structure of the project. The output will be in the form of a HTML webpage or multiple LaTeX files. 
