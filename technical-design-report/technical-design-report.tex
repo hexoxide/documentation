@@ -97,7 +97,7 @@
 \addcontentsline{toc}{section}{\protect\numberline{}Introduction}
 This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
-Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experiments and make new discoveries. This new software has evolved from previous work which will be briefly touched upon.
+Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experimenting and make new discoveries. This new software has evolved from previous work which will be briefly touched upon. It is important to note that there is a distinction between the two new systems we provide: the ICN and the Zookeeper implementation.
 
 The rationale for the project will be explained in the introduction along with its common terminology, an overview of past and future events as well as information about previous work.
 
@@ -292,8 +292,6 @@ Based on the reports of the previous experiments, a table could be compiled whic
 \subsection{New software \& system components}
 The system consist of different nodes all of which are running Debian stretch as operating system and which are accessible using SSH. The Raspberry Pi based nodes have all dependencies installed using the raspberry-dependency repository and its install scripts. The X86 based virtual machine has different software components installed which will be described later for these components an installation guide is available in the documentation repository.
 
-Among the set of nodes is one new node known as the InformationControlNode (ICN) this node will replace the Information Node used in the original O2Balancer. The new ICN node will have additional functionality compared to the original Information Node which is the reason behind the new name. The other nodes in the new software such as the FLP and EPN will have the same functionality as in the original O2Balancer.
-
 \begin{table}[H]
 	\begin{center}
 		\begin{tabularx}{\textwidth}{ | l | X | }
@@ -311,12 +309,12 @@ Among the set of nodes is one new node known as the InformationControlNode (ICN)
 \end{table}
 
 \subsection{Installation}
-To ensure the reproducibility of experiments executed by the new software, a bash script\cite{hex_dependency} has been developed which will install all the dependencies automatically, while using Bash instead of Ansible ensures the availability of the install script on isolated platforms. The installation instructions are based on Debian distributions and additional effort could be required to be able to use them on different distributions. Along this installation scripts additional documentation is available in the documentation repository which will allow to configure the X86 based system components.
+To ensure the reproducibility of experiments executed by the new software, a \hyperref[sec:ref06]{bash script [6]} has been developed which will install all the dependencies automatically. The installation instructions are based on Debian distributions and additional effort could be required to be able to use them on different distributions. Along this installation scripts additional documentation is available in the documentation repository which will allow to configure the X86 based system components.
 
 \subsection{SSH}
 Remote access to each of the individual nodes is done via SSH in the setup the first node is used a portal to access the other nodes in the network. Using a single node as portal limits the amount of ports that needs to be forwarded to the outside network. Additionally an SSH key from the portal node can be added to every node so that SSH logins no longer require a username \& password after logging into the portal.
 
-The SSH configuration also uses SSH tunneling this is done to allow access to an web based dashboard running on the X86 based virtual machine.
+The SSH configuration also uses ssh tunneling this is done to allow access to an web based dashboard running on the X86 based virtual machine.
 
 \begin{center}
 	\begin{figure}[H]
@@ -816,7 +814,7 @@ In all the red highlighted configurations the total size of accumulated messages
 
 
 \section{ZooKeeper throughput experiment}
-The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [12]} has the following throughput:
+The round-robin whitelist implementation using \hyperref[sec:ref12]{zookeeper [12]} has the following throughput:
 \begin{itemize}
 	\itemsep 0em
 	\item Using packet size: 232000 bytes
@@ -826,7 +824,7 @@ The round-robin blacklist implementation using \hyperref[sec:ref12]{zookeeper [1
 
 The implementation offers a robust system: the order of which flp/epn/icn starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again.
 
-The blacklist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
+The whitelist algorithm has a different approach than the previous \hyperref[sec:ref13]{version [13]}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
 
 Multiple small improvements have been made, such as: no overriding of fairmq classes(so that is compatible to further versions), flp only retrieves zk values of new epns (instead of all epns with each watcher trigger), uses watchers, can detect restarted nodes, relieved network load by using direct channels from flp to icn (instead of using zookeeper), and finally a simpler file structure.
 
@@ -884,6 +882,7 @@ Future experiments should take multiple iteration times into account as this par
 
 \section{Discussion}
 Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During this experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes a larger variety of iteration times could also benefit the results.
+An important aspect of the zookeeper system that could be tested in a further study is whether all the flps send all the subtime frames of a heartbeat to the same epn, and if they keep doing that with a prolonged run-time (1 hour+). Also a reliability comparison between the two systems used (Zookeeper vs ICN) would be interesting.
 
 \pdfbookmark[1]{References}{References}
 \bibliographystyle{IEEEtran}
@@ -976,6 +975,24 @@ make test
 
 \begin{lstlisting}
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 2 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
+\end{lstlisting}
+
+\subsubsection{Commands for experiment with round-robin whitelist Zookeeper }
+git checkout zookeepertje
+\begin{lstlisting}
+node 1:
+sudo /usr/share/zookeeper/bin/zkServer.sh start
+./icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005
+\end{lstlisting}
+
+\begin{lstlisting}
+node 2 and 5:
+./flp --severity trace --verbosity high --id 1 --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://<ip address of icn>:5005
+\end{lstlisting}
+
+\begin{lstlisting}
+node 3,4,6,7 and 8
+./epn --severity trace --verbosity high --id 1 --channel-config name=1,type=pull,method=bind,address=tcp://<own ip address>:5555,rateLogging=1
 \end{lstlisting}
 
 
