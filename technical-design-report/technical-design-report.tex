@@ -159,7 +159,7 @@ For other distributions with different package managers it should be fairly easy
 \addcontentsline{toc}{subsubsection}{\protect\numberline{}Verify software installation}
 Once the O2Balancer and its dependencies are installed, the installation can be verified by executing execute.sh in the build directory of O2Balancer, however, first ZooKeeper needs to be started.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./execute.sh
 \end{lstlisting}
@@ -409,7 +409,7 @@ This project uses Doxygen to create the documentation. Doxygen is a library that
 In order to use Doxygen for this project, it should be installed on the machine beforehand. It’s important to note that Doxygen will be executed through CMake. So the path to the library should be findable for CMake.
 
 Normally, the documentation will be automatically generated when building the project. However, this can be disabled through the following command:
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 cmake -DENABLE_DOXY=OFF
 \end{lstlisting}
 
@@ -429,7 +429,7 @@ To access the HTML version, open ‘index.html’ inside a web browser. The file
 There are several ways for adding comments in the source code which will be detected by doxygen. Here follows the template comments used in this project.
 \begin{itemize}
 \item \textbf{Block}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /*
 * [description]
 * [more description]
@@ -438,13 +438,13 @@ There are several ways for adding comments in the source code which will be dete
 \end{lstlisting}
 
 \item \textbf{Brief description (for classes)}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /// [description]
 [entity]
 \end{lstlisting}
 
 \item \textbf{One line}
-\begin{lstlisting}
+\begin{lstlisting}[language=C++]
 /** [description] */
 [entity]
 \end{lstlisting}
@@ -924,7 +924,7 @@ Finally the variation of iteration time from 30 seconds to 3 minutes has shown t
 \end{center}
 
 \subsection{Metricbeat}
-During the round robin ICN experiments metricbeat was used on the raspberry pi nodes to record metric data, unfortunately the results from this data proved unusable due to unreliability as well as the metricbeat process requiring a lot of system resources. The metricbeat process occasionally caused 65\% CPU utilization, additionally many graphs tended to be, making it hard to correlate them. Many of the nodes stopped correctly reporting metrics after a period of time which required the restarting of the metricbeat process to be resolved.
+During the round robin ICN experiments Metricbeat was used on the Raspberry Pi nodes to record metric data, unfortunately the results from this data proved unusable due to unreliability as well as the Metricbeat process requiring a lot of system resources. The Metricbeat process occasionally caused 65\% CPU utilization, additionally many graphs tended to be, making it hard to correlate them. Many of the nodes stopped correctly reporting metrics after a period of time which required the restarting of the metricbeat process to be resolved.
 
 \begin{center}
 	\begin{figure}[H]
@@ -973,28 +973,28 @@ XXXXXX = Message size \\
 YYY = Number of FLPs in the network
 
 \subsubsection{Commands for experiment with single network card}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=0,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://192.168.1.4:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --severity trace --verbosity high --id 1 --num-flp YYY --channel-config name=1,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://192.168.1.4:5000
 \end{lstlisting}
 
 \subsubsection{Commands for experiment with dual network cards}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=0,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.138:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --severity trace --verbosity high --id 1 --num-flp YYY --channel-config name=1,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.138:5000
 \end{lstlisting}
 
@@ -1006,52 +1006,52 @@ ZZZ = Number of iterations \\
 WWW = EPN number
 
 \subsubsection{Build configuration}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_DOXY=false ..
 make 
 make test
 \end{lstlisting}
 
 \subsubsection{1 FLP}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --control static --severity trace --verbosity high --id 1 --iterations ZZZ --rate YYY --channel-config name=broadcast,type=pub,method=bind,rateLogging=1,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=1,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.1:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 1 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
 
 \subsubsection{2 FLP}
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./icn/icn --control static --severity trace --verbosity high --id 1 --iterations ZZZ --rate YYY --channel-config name=broadcast,type=pub,method=bind,rateLogging=1,address=tcp://*:5005 name=feedback,type=pull,method=bind,rateLogging=1,address=tcp://*:5000
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./flp/flp --severity trace --verbosity high --id 1 --bytes-per-message XXXXXX --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://10.42.0.1:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 ./epn/epn --control static --severity trace --verbosity high --id WWW --primary-interface eth0 --num-flp 2 --channel-config name=WWW,type=pull,method=bind,address=tcp://*:5555,rateLogging=1 name=feedback,type=push,method=connect,address=tcp://10.42.0.1:5000
 \end{lstlisting}
 
 \subsubsection{Commands for experiment with round-robin whitelist Zookeeper }
 git checkout zookeepertje
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 1:
 sudo /usr/share/zookeeper/bin/zkServer.sh start
 ./icn --severity trace --verbosity high --id 1 --iterations 6000 --rate 200 --channel-config name=broadcast,type=pub,method=bind,rateLogging=0,address=tcp://*:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 2 and 5:
 ./flp --severity trace --verbosity high --id 1 --channel-config name=broadcast,type=sub,method=connect,rateLogging=1,address=tcp://<ip address of icn>:5005
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=bash]
 node 3,4,6,7 and 8
 ./epn --severity trace --verbosity high --id 1 --channel-config name=1,type=pull,method=bind,address=tcp://<own ip address>:5555,rateLogging=1
 \end{lstlisting}
