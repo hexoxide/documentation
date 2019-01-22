@@ -482,7 +482,7 @@ Before diving into the research, this paragraph describes the general problem of
 \end{center}
 
 \subsection{Main Research Question} 
-The focus of the project is to deliver a scalable, performent and autonoom load balancing system. And also to conduct experiments to gather information about the reliability of the system.
+The focus of the project is to deliver a scalable, performent and autonomously load balancing system. And also to conduct experiments to gather information about the reliability of the system.
 At the initial state of the project we defined the main research question as following: \textit{“How do different load-balancing algorithms compare in transferring a continuous data stream across parallel many-to-one streams?”}
 
 \subsection{Sub Research Question}
@@ -860,7 +860,7 @@ The second system we provide is the round-robin whitelist load balancer, using Z
 
 It is imported to note that the ICN is very different in this system than in the O2Balancer2 ICN version. The ICN in this implementation \textbf{only} sends heartbeats to the FLPs.
 
-The whitelist algorithm has a different approach than the previous O2Balancer \cite{O2Balancer_github}. The previous version overrides a FairMQ class to allow for removing a channel from the channel list contained in MQProgOptions\cite{mq_prog}. The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significantly faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
+The whitelist algorithm has a different approach than the previous O2Balancer \cite{O2Balancer_github}. The previous version inherits the FairMQDevice class and overrides it to be able to remove a channel from the channel list contained in FairMQDevice\cite{mq_prog}. The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significantly faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
 
 Multiple small improvements have been made such as: no overriding of fairmq classes(to keep it compatible with further versions), FLP only retrieves ZooKeeper values of new EPNs (instead of all EPNs with each watcher trigger), uses watchers, can detect restarted nodes, relieves network load by using direct channels from FLP to ICN(instead of using ZooKeeper), and finally a simpler file structure.
 
