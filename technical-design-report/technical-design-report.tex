@@ -100,11 +100,11 @@ Experiments and their setup are detailed so they can be repeated easily in the f
 
 The rationale for the project will be explained in the introduction along with its common terminology, an overview of past and future events as well as information about previous work.
 
-\subsection*{Alice O$^2$}
-\addcontentsline{toc}{subsection}{\protect\numberline{}Alice O$^2$}
-CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC, along with its various detectors, is currently receiving a scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (Alice). This detector will also be receiving an upgrade during LS2 and as a result, the amount of data created by the detector will increase. However, the network behind the detector is currently not capable of processing the data at the increased rate. The Alice O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation of the upgrade, the Alice O$^2$ project was documented in a Technical Design Report (TDR) released by CERN in 2015\cite{Buncic:2011297}.
+\subsection*{ALICE O$^2$}
+\addcontentsline{toc}{subsection}{\protect\numberline{}ALICE O$^2$}
+CERN is the organization which has build worlds largest particle accelerator know as the Large Hadron Collider (LHC). The LHC, along with its various detectors, is currently receiving a scheduled upgrade during a phase called Long Shutdown 2 (LS2). One of these various detectors is known as A Large Ion Collider Experiment (ALICE). This detector will also be receiving an upgrade during LS2 and as a result, the amount of data created by the detector will increase. However, the network behind the detector is currently not capable of processing the data at the increased rate. The ALICE O$^2$ project describes the necessary changes to software, hardware and network in order to be able to process the increased data rate of the detector. In preparation of the upgrade, the ALICE O$^2$ project was documented in a Technical Design Report (TDR) released by CERN in 2015\cite{Buncic:2011297}.
 
-The CERN Load Balancing project focuses on the network load balancing described in the TDR for Alice O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs), and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the Alice detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs, they will start transmitting data to the EPNs. In turn, the EPNs will receive this data and from the FLPs, however, to correctly process the data all FLP's need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs), transmitted from the FLPs to the EPNs so they can be processed into Time Frames(TF). The overall Alice O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
+The CERN Load Balancing project focuses on the network load balancing described in the TDR for ALICE O$^2$. The two primary types of computer nodes that will perform the network load balancing operations for the received detector data are known as the First Level Processors (FLPs), and the Event Processing Nodes (EPNs), however, throughout this document these will also be abbreviated in singular form being FLP and EPN. The FLPs will be directly interfacing with the ALICE detector on a special device known as an Field Programmable Gate Array (FPGA) and based on triggers from these FPGAs, they will start transmitting data to the EPNs. In turn, the EPNs will receive this data and from the FLPs, however, to correctly process the data all FLPs need to transmit to a single EPN for each event. The load balancing should ensure the correct transmission of so called Sub-Time Frames(STFs), transmitted from the FLPs to the EPNs so they can be processed into Time Frames(TF). The overall ALICE O$^2$ system and operation is described in greater detail but this is best read in the TDR\cite{Buncic:2011297} as the currently described information should suffice for further reading of this document.
 
 \subsection*{Previous work}
 \addcontentsline{toc}{subsection}{\protect\numberline{}Previous work}
@@ -125,7 +125,7 @@ All work was based on evaluations and experiments that were run on X86 based pro
 
 \subsection*{Original O2Balancer}
 \addcontentsline{toc}{subsection}{\protect\numberline{}Original O2Balancer}
-\textit{\textbf{Disclaimer: The original O2Balancer had never reached an operational stage between the duration of the Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the original O2Balancer to run experiments.}}
+\textit{\textbf{Disclaimer: The original O2Balancer had never reached an operational stage during of the Software for Science Load Balancing project 2018/2019 and although it provides details which will help others come a long way, it will take further steps to be able to use the original O2Balancer to run experiments.}}
 
 At the start of this project, several experiments had previously been done on this subject. These previous experiments have led to the creation of existing software. It is important to identify how these software packages worked and reference them, so that they can be used in the future.
 
@@ -224,11 +224,11 @@ The Raspberry Pi clusters used in the experiments were initially empty. So the R
 Raspberry Pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
 
 \subsection{Hardware Specifications}
-According to the Alice technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the Alice O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
+According to the ALICE technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the ALICE O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
 
 A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pis, specifically, model 3 B+.
 
-In table \ref{tab:specs} a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
+In table \ref{tab:specs} a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for ALICE O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
 
 \begin{table}[H]
 	\begin{center}
@@ -259,7 +259,7 @@ The following networking diagram shows an overview of the entire network using C
 \end{center}
 
 \subsection{New software introduction}
-An environment as similar as possible to the one used at CERN is desired. It has, however, proven unfeasible to use CentOS, due to the limitations the Raspberry pi version has in comparison to the CentOS x86\_64 image. One of the main reasons is the inability to switch between gcc versions. Normally, a tool called SCL provides the switching for specific versions of many development tools. Furthermore, the version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. To continue using CentOS, gcc would have to be built from source.
+An environment as similar as possible to the one used at CERN is desired. It has, however, proven unfeasible to use CentOS, due to the limitations the Raspberry Pi version has in comparison to the CentOS x86\_64 image. One of the main reasons is the inability to switch between gcc versions. Normally, a tool called SCL provides the switching for specific versions of many development tools. Furthermore, the version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. To continue using CentOS, gcc would have to be built from source.
 
 To resolve the issues with the CentOS image, an alternative had to be chosen. And based on previous experience, Manjaro 17.1 was chosen. Manjaro provides a full featured ARM image for with a large amount of available packages. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
 
@@ -320,7 +320,7 @@ The SSH configuration also uses SSH tunneling. This is done to allow access to a
 \begin{center}
 	\begin{figure}[H]
 		\includegraphics[width=\textwidth]{images/ssh}
-		\caption{Example of login in using SSH on remote accessible raspberry pi.}
+		\caption{Example of login in using SSH on remote accessible Raspberry Pi.}
 		\label{fig:ssh}
 	\end{figure}
 \end{center}
@@ -460,7 +460,7 @@ The full documentation of Doxygen is available online \cite{doxygen}.
 \section{Synthetic benchmarks}
 To measure the maximum throughput that can be achieved on the network, the \cite{iperf3} tool was used to measure the throughput for ten seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
 
-The 94Mbit of throughput was expected. Even though the Raspberry Pi has a 1Gbit interface, this is limited to 300Mbit due to sharing a USB 2.0 host controller. This limited throughput is due to the Raspberry Pi’s being connected via a 100Mbit switch.
+The 94Mbit of throughput was expected. Even though the Raspberry Pi has a 1Gbit interface, this is limited to 300Mbit due to sharing a USB 2.0 host controller. This limited throughput is due to the Raspberry Pis being connected via a 100Mbit switch.
 
 \begin{center}
 	\begin{figure}[H]
@@ -856,29 +856,29 @@ In all the red highlighted configurations, the total size of accumulated message
 
 
 \section{O2Balancer2 ZooKeeper version}
-The second system we provide is the round-robin whitelist loadbalancer, using ZooKeeper\cite{apache_zookeeper} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts-up or shuts-down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
+The second system we provide is the round-robin whitelist load balancer, using ZooKeeper\cite{apache_zookeeper} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts up or shuts down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
 
-It is imported to note that the ICN is much different in this system than in the O2Balancer2 ICN version. The ICN in this implementation \textbf{only} sends heartbeats to the FLPs.
+It is imported to note that the ICN is very different in this system than in the O2Balancer2 ICN version. The ICN in this implementation \textbf{only} sends heartbeats to the FLPs.
 
-The whitelist algorithm has a different approach than the previous O2Balancer \cite{O2Balancer_github}. The previous version overrides a fairmq class to allow for removing a channel from the channel list contained in MQProgOptions.  The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significant faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
+The whitelist algorithm has a different approach than the previous O2Balancer \cite{O2Balancer_github}. The previous version overrides a FairMQ class to allow for removing a channel from the channel list contained in MQProgOptions\cite{mq_prog}. The new version solves this by maintaining a list of the online nodes so it is known which channels not to use. This allows for significantly faster reinitializing of the node, since the channel doesn’t have to be broken down, instead the channels stay unused until the node comes back online in which case the node will be added to the list of online nodes. 
 
-Multiple small improvements have been made, such as: no overriding of fairmq classes(so that is compatible to further versions), FLP only retrieves zk values of new EPNs (instead of all EPNs with each watcher trigger), uses watchers, can detect restarted nodes, relieved network load by using direct channels from FLP to ICN(instead of using ZooKeeper), and finally a simpler file structure.
+Multiple small improvements have been made such as: no overriding of fairmq classes(to keep it compatible with further versions), FLP only retrieves ZooKeeper values of new EPNs (instead of all EPNs with each watcher trigger), uses watchers, can detect restarted nodes, relieves network load by using direct channels from FLP to ICN(instead of using ZooKeeper), and finally a simpler file structure.
 
-The software can be found on the zookeepertje\cite{zookeepertje} branch from the O2Balancer2 repo. Unfortunately there are no experiments conducted with this ZooKeeper implementation due to time constraints.
+The software can be found on the zookeepertje\cite{zookeepertje} branch from the O2Balancer2 repository. Unfortunately there are no experiments conducted with this ZooKeeper implementation due to time constraints.
 
 \subsection{ZooKeeper throughput experiment} 
 The round-robin whitelist implementation using ZooKeeper has the following throughput:
 \begin{itemize}
 	\itemsep 0em
 	\item Using packet size: 232000 bytes
-	\item 2 flps - 5 epns - 60 tfps - measured input: 18 packets (3,67MB per epn = 18,8 MB/s total)
-	\item 1 flps - 5 epns - 60 tfps - measured input: 12,5 packets (2,16 MB per epn = 10,8 MB/s total)
+	\item 2 FLPs - 5 EPNs - 60 tfps - measured input: 18 packets (3,67MB per EPN = 18,8 MB/s total)
+	\item 1 FLPs - 5 EPNs - 60 tfps - measured input: 12,5 packets (2,16 MB per EPN = 10,8 MB/s total)
 \end{itemize}
 
 \section{Results}
-In this section the results from different experiments are compared as well as data from the synthetic benchmark. The information will be used to draw conclusion and recommend further work.
+In this section, the results from different experiments are compared as well as data from the synthetic benchmark. The information will be used to draw conclusions and recommend further work.
 
-During the synthetic benchmark the network was able to sustain a throughput of 94Mbit while during the network baseline only 93Mbit could be achieved with an single FLP, however the network baseline only used the primary networking interface for all data and ran at an event rate of 200Hz. The additional results from the round robin ICN experiment show that the 94Mbit throughput can be sustained at both 50 \& 200Hz when using the auxiliary networking interface for communication between ICN to FLP and EPN to ICN.
+During the synthetic benchmark, the network was able to sustain a throughput of 94Mbit, while during the network baseline only 93Mbit could be achieved with a single FLP. However, the network baseline only used the primary networking interface for all data and ran at an event rate of 200Hz. The additional results from the round robin ICN experiment show that the 94Mbit throughput can be sustained at both 50 \& 200Hz when using the auxiliary networking interface for communication between ICN to FLP and EPN to ICN.
 
 \begin{center}
 	\begin{figure}[H]
@@ -886,15 +886,15 @@ During the synthetic benchmark the network was able to sustain a throughput of 9
 	\end{figure}
 \end{center}
 
-This sustained throughput of 94Mbit was only possible with a single FLP in the network while with two FLPs there were still losses at 93Mbit throughput, although these losses were around 0.5\% for both 50 \& 200Hz event rates. The experiments show significant data that the 200Hz event rate could be sustained by an round robin algorithm with only a small reduction in network throughput.
+This sustained throughput of 94Mbit was only possible with a single FLP in the network while with two FLPs there were still losses at 93Mbit throughput, although these losses were around 0.5\% for both 50 \& 200Hz event rates. The experiments show significant data that the 200Hz event rate could be sustained by a round robin algorithm with only a small reduction in network throughput.
 
 \begin{center}
 	\begin{figure}[H]
-		\includegraphics[width=\textwidth]{"images/Effects of increased event rates on the loss for Round Robin with 2 FLP's"}
+		\includegraphics[width=\textwidth]{"images/Effects of increased event rates on the loss for Round Robin with 2 FLPs"}
 	\end{figure}
 \end{center}
 
-Finally the variation of iteration time from 30 seconds to 3 minutes has shown that this can have an effect of the loss that will be measured during the experiment. The total losses measured for both 30 second and 3 minute iterations are relatively low (always below 10\% and regularly below 3\%), however, the difference between the two iteration times can be as much as 650\%. This is an substantial difference that shows that other iteration times than 30 seconds should be considered in upcoming experiments.
+Finally, the variation of iteration time from 30 seconds to 3 minutes has shown that this can have an effect on the loss that will be measured during the experiment. The total losses measured for both 30 second and 3 minute iterations are relatively low (always below 10\% and regularly below 3\%), however, the difference between the two iteration times can be as much as 650\%. This is a substantial difference that shows other iteration times than 30 seconds should be considered in future experiments.
 
 \begin{center}
 	\begin{figure}[H]
@@ -928,7 +928,7 @@ Future experiments should take multiple iteration times into account as this par
 
 \section{Discussion}
 Additional experiments with more nodes are required to better determine the effects of the round robin algorithm at 200Hz event rate. During this experiments, additional metrics would be of great value, but the overall feasibility of metricbeats and the entire MELK stack needs to be properly evaluated, especially for the ARM platform. In addition to the increased amount of nodes a larger variety of iteration times could also benefit the results.
-An important aspect of the ZooKeeper system that could be tested in a further study is whether all the flps send all the subtime frames of a heartbeat to the same epn, and if they keep doing that with a prolonged run-time (1 hour+). Also a reliability comparison between the two systems used (ZooKeeper vs ICN) would be interesting.
+An important aspect of the ZooKeeper system that could be tested in a further study is whether all the FLPs send all the subtime frames of a heartbeat to the same EPN, and if they keep doing that with a prolonged run-time (1 hour+). Also a reliability comparison between the two systems used (ZooKeeper vs ICN) would be interesting.
 
 \pdfbookmark[1]{References}{References}
 \bibliographystyle{IEEEtran}
