@@ -86,7 +86,7 @@
 			& & \tabitemNum 12. Added ZooKeeper section. \\ \hline
 			\multirow{1}{*}{1.0} & 19-01-2019 & \tabitemNum 13. Added Bibtex for IEEE referencing. \\
 			& & \tabitemNum 14. Added CERN official Bibtex document output to reference TDR. \\ \hline
-			\multirow{1}{*}{1.0} & 21-01-2019 & \tabitemNum 15. Additional bookmark references for uncounted sections. \\ \hline
+			\multirow{1}{*}{1.0} & 22-01-2019 & \tabitemNum 15. Additional bookmark references for uncounted sections and applied final changes\\ \hline
 		\end{tabularx}
 	\end{center}
 \end{table}
@@ -216,7 +216,7 @@ Each individual binary has command line arguments and a configuration file, some
 	\end{center}
 \end{table}
 
-The execute.sh script will open a total of six windows which should appear, each running a different type of node software. In total there should be three EPNs, twp FLPs \& one Information Node.
+The execute.sh script will open a total of six windows which should appear, each running a different type of node software. In total there should be three EPNs, two FLPs \& one Information Node.
 
 \section{Hardware \& software setup}
 The Raspberry Pi clusters used in the experiments were initially empty. So the Raspberry Pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A Bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up the initial 'Pi cluster setup' are stored in a repository that is publicly accessible and listed within this document. Bash was chosen as an automation language because of its high availability on Linux distributions. Subsequently, using Bash instead of Ansible allows to install dependencies on nodes which might not be accessible with Ansible such as isolated virtual machines.
@@ -224,11 +224,11 @@ The Raspberry Pi clusters used in the experiments were initially empty. So the R
 Raspberry Pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
 
 \subsection{Hardware Specifications}
-According to the ALICE technical design report \cite{Buncic:2011297}, there will be two types of computing nodes in the ALICE O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
+According to the ALICE TDR \cite{Buncic:2011297}, there will be two types of computing nodes in the ALICE O$^2$ project after LS2. In total there will be about 2000 nodes in O$^2$, 250 so called FLP nodes and 1750 EPN nodes.
 
 A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pis, specifically, model 3 B+.
 
-In table \ref{tab:specs} a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for ALICE O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
+In table \ref{tab:specs}, a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for ALICE O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
 
 \begin{table}[H]
 	\begin{center}
@@ -261,7 +261,7 @@ The following networking diagram shows an overview of the entire network using C
 \subsection{New software introduction}
 An environment as similar as possible to the one used at CERN is desired. It has, however, proven unfeasible to use CentOS, due to the limitations the Raspberry Pi version has in comparison to the CentOS x86\_64 image. One of the main reasons is the inability to switch between gcc versions. Normally, a tool called SCL provides the switching for specific versions of many development tools. Furthermore, the version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. To continue using CentOS, gcc would have to be built from source.
 
-To resolve the issues with the CentOS image, an alternative had to be chosen. And based on previous experience, Manjaro 17.1 was chosen. Manjaro provides a full featured ARM image for with a large amount of available packages. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
+To resolve the issues with the CentOS image, an alternative solution was needed, and based on previous experience, Manjaro 17.1 was chosen. Manjaro provides a full featured ARM image for with a large amount of available packages. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
 
 Unfortunately, due to the rolling release model of Manjaro, this also led to a lot of issues including, but not limited to: broken packages, unavailable mirrors and missing kernel modules. As an alternative, Raspbian stretch was chosen because of its extensive support and large community, which should allow to more easily mitigate problems.
 
@@ -289,9 +289,9 @@ Based on the reports of the previous experiments, a table could be compiled whic
 \end{table}
 
 \subsection{New software \& system components}
-The system consist of different nodes all of which are running Debian stretch as operating system and which are accessible using SSH. The Raspberry Pi based nodes have all dependencies installed using the raspberry-dependency repository and its install scripts. The X86 based virtual machine has different software components installed which will be described later for these components an installation guide is available in the documentation repository.
+The system consists of different nodes, all of which are running Debian stretch as operating system and are accessible using SSH. The Raspberry Pi based nodes have all dependencies installed using the raspberry-dependency repository and its install scripts. The X86 based virtual machine has different software components installed which will be described later. These components all have an installation guide available in the documentation repository.
 
-Among the set of nodes is one new node known as the Information Control Node (ICN). This node will replace the Information Node used in the original O2Balancer. The new ICN node will have additional functionality compared to the original Information Node which is the reason behind the new name. The other nodes in the new software such as the FLP and EPN will have the same functionality as in the original O2Balancer.
+Among the set of nodes is one new node known as the Information Control Node (ICN). This node will replace the Information Node used in the original O2Balancer. The new ICN node will have additional functionality compared to the original Information Node which is the reason for the new name. The other nodes in the new software such as the FLP and EPN will have the same functionality as in the original O2Balancer.
 
 \begin{table}[H]
 	\begin{center}
@@ -310,7 +310,7 @@ Among the set of nodes is one new node known as the Information Control Node (IC
 \end{table}
 
 \subsection{Installation}
-To ensure the reproducibility of experiments executed by the new software, a Bash script\cite{hex_dependency} has been developed which will install all the dependencies automatically. Using Bash instead of Ansible ensures the availability of the install script on isolated platforms. The installation instructions are based on Debian distributions and additional effort could be required to be able to use them on different distributions. Along this installation scripts additional documentation is available in the documentation repository which will allow to configure the X86 based system components.
+To ensure the reproducibility of experiments executed by the new software, a Bash script\cite{hex_dependency} has been developed which will install all the dependencies automatically. Using Bash instead of Ansible ensures the availability of the install script on isolated platforms. The installation instructions are based on Debian distributions and additional effort could be required to be able to use them on different distributions. Along with these installation scripts, additional documentation is available in the documentation repository which will allow configuration of the X86 based system components.
 
 \subsection{SSH}
 Remote access to each of the individual nodes is done via SSH in the setup the first node is used a portal to access the other nodes in the network. Using a single node as portal limits the amount of ports that need to be forwarded to the outside network. Additionally, an SSH key from the portal node can be added to every node as known host so that SSH logins no longer require a username \& password after logging into the portal.
@@ -320,7 +320,7 @@ The SSH configuration also uses SSH tunneling. This is done to allow access to a
 \begin{center}
 	\begin{figure}[H]
 		\includegraphics[width=\textwidth]{images/ssh}
-		\caption{Example of login in using SSH on remote accessible Raspberry Pi.}
+		\caption{Example of logging in using SSH on remotely accessible Raspberry Pi.}
 		\label{fig:ssh}
 	\end{figure}
 \end{center}
@@ -329,7 +329,7 @@ The SSH configuration also uses SSH tunneling. This is done to allow access to a
 To run and configure tests on the pi clusters, some things will need to be configured. Ansible will be used to handle the configuration of each pi, defining which experiments to run and with which parameters to do so. Ansible allows to apply different parameters to different categories of hosts.
 
 \subsection{MELK}
-Metricbeat can be used to gather statistics of the nodes. This data can be sent to Logstash, which should have run on the ICN. Then, Logstash can output the data in two ways:
+Metricbeat can be used to gather statistics of the nodes. This data can be sent to Logstash, which should run on the ICN. Then, Logstash can output the data in two ways:
 \begin{itemize}
 	\itemsep 0em
 	\item Plain text file
@@ -366,7 +366,7 @@ While Metricbeat offers a wide range of data to send, in the setup for running O
 
 \subsubsection{Visualizations}
 Kibana offers several types of visualizations: charts such as area, heat map, horizontal and vertical bar and pie. For the purpose of the experiments and their effects on the hardware and network, line charts proved to be most effective in visualising the relevant data, because these showed changes over time.
-These graphs are then displayed in a grid formation on a dashboard, which created an ordered overview of all measured statistics.
+The graphs are then displayed in a grid formation on a dashboard, which created an ordered overview of all measured statistics.
 
 \begin{center}
 	\begin{figure}[H]
@@ -415,7 +415,7 @@ cmake -DENABLE_DOXY=OFF
 \subsubsection{Access}
 After Doxygen has been executed, the documentation can be found in the ‘docs’ directory, located in the root directory of the project.
 
-To access the HTML version, open ‘index.html’ inside a web browser. The file is located in the ‘html’ directory. Here follows a overview of the most important sections:
+To access the HTML version, open ‘index.html’ inside a web browser. The file is located in the ‘html’ directory. Here follows an overview of the most important sections:
 \begin{itemize}
 	\itemsep 0em
 	\item \textbf{Main Page}: Contains the README.md file of the project.
@@ -425,7 +425,7 @@ To access the HTML version, open ‘index.html’ inside a web browser. The file
 \end{itemize}
 
 \subsubsection{Modify}
-There are several ways to add comments in the source code which will be detected by doxygen. Here follows the template comments used in this project.
+There are several ways to add comments in the source code which will be detected by doxygen. Here follows the comment templates used in this project.
 \begin{itemize}
 \item \textbf{Block}
 \begin{lstlisting}
@@ -482,7 +482,7 @@ Before diving into the research, this paragraph describes the general problem of
 \end{center}
 
 \subsection{Main Research Question} 
-The focus of the project is to deliver a scalable, performent and autonomously load balancing system. And also to conduct experiments to gather information about the reliability of the system.
+The focus of the project is to deliver a scalable, performent and autonomous load balancing system, and also to conduct experiments to gather information about the reliability of the system.
 At the initial state of the project we defined the main research question as following: \textit{“How do different load-balancing algorithms compare in transferring a continuous data stream across parallel many-to-one streams?”}
 
 \subsection{Sub Research Question}
@@ -521,9 +521,9 @@ In the tables describing the experiments, the specific results which have the sa
 \subsection{Network throughput baseline}
 This experiment tests network throughput using the FairMQ application layers after having measured the maximum throughput that could be achieved on the specific hardware using the synthetic benchmark. The absolute maximum throughput that can be achieved is 94Mbit as demonstrated with iperf3.
 
-The 94 Mbit throughput can be translated into a 11.75 Mbyte throughput. With the message rate of 200Hz, it can be determined that the network should be able to sustain a message size of 58750 bytes. The number of FLPs and the message size was varied during this experiment.
+The 94 Mbit throughput can be translated into an 11.75 Mbyte throughput. With the message rate of 200Hz, it can be determined that the network should be able to sustain a message size of 58750 bytes. The number of FLPs and the message size was varied during this experiment.
 
-The experiment should run for 30 seconds and is validated with tight timing constraints. The total experiment time should be no less than 29.7 seconds and no more than 30.3. Failure of a run to be within these timing constraints means it will not be used as part of the results.
+The experiment should run for 30 seconds and is validated with tight timing constraints. The total experiment time should be no less than 29.7 seconds and no more than 30.3. Failure of a run within these timing constraints means it will not be used as part of the results.
 
 \begin{center}
 	\begin{figure}[H]
@@ -553,7 +553,7 @@ The experiment should run for 30 seconds and is validated with tight timing cons
 	\end{center}
 \end{table}
 
-The experiment consisted of nine different configurations were both the message size and the number of FLPs in the network were varied. Each configuration was run for 30 iterations, so additional statistical analysis could be performed if required.
+The experiment consisted of nine different configurations where both the message size and the number of FLPs in the network were varied. Each configuration was run for 30 iterations, so additional statistical analysis could be performed if required.
 
 \begin{table}[H]
 	\textbf{Configuration overview}
@@ -578,7 +578,7 @@ The experiment consisted of nine different configurations were both the message 
 \end{table}
 
 \subsubsection{Operation}
-The operation of the experiment involved a two step procedure, where in the first step the binaries are configured and, in the second step the actual experiment is run. During this experiment, the ICN’s available channels are hard coded into the binary and could only be changed at compile time. 
+The operation of the experiment involved a two step procedure, where in the first step the binaries are configured and in the second step the actual experiment is run. During this experiment, the ICN’s available channels are hard coded into the binary and could only be changed at compile time. 
 
 The three different core Binaries are started at the same time and the EPN \& FLP will wait for incoming messages while the ICN starts counting down a ten second wait period. After the grace period, the ICN will send the EPN channel configuration to all FLPs. After the message has been sent, the ICN will wait an additional two seconds for the FLPs to configure the newly received channels. When the ICN has waited for the FLPs to be configured, the experiment will run.
 
@@ -642,7 +642,7 @@ This experiment tests the achievable throughput with minimal packet loss using t
 
 Eight nodes are configured during this experiment and the node ratio of 1:6 with regards to the FLP and EPNs is achieved. Both 50Hz and 200Hz event rates will be tested to completely cover the event operating range of the network after LS2.
 
-Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally, each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers. However, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
+Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally, each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determine if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers. However, network buffers can only mitigate such a network bottleneck for a short duration, so as a result the longer iteration time should discover these problems.
 
 \begin{lstlisting}[language=C++]
 /**
