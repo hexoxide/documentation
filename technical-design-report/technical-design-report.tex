@@ -219,7 +219,7 @@ Each individual binary has command line arguments and a configuration file, some
 The execute.sh script will open a total of six windows which should appear, each running a different type of node software. In total there should be three EPNs, twp FLPs \& one Information Node.
 
 \section{Hardware \& software setup}
-The Raspberry Pi clusters used in experiments were initially empty. So the Raspberry Pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A Bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up initial pi cluster setup are stored in repository that are publicly accessible and listed within this document. Bash was chosen as an automation language because of its high availability on Linux distributions, Subsequently using Bash instead of Ansible allows to install dependencies on nodes which might not be accessible with Ansible such as isolated virtual machines.
+The Raspberry Pi clusters used in the experiments were initially empty. So the Raspberry Pi clusters are configured with an image. To speed up the initial process, one image was made and reused for the other clusters. The required dependencies were also installed on the initial image. A Bash script was developed which helps with the installation of the dependencies. The remaining processes were automated with Ansible. All the scripts to speed up the initial 'Pi cluster setup' are stored in a repository that is publicly accessible and listed within this document. Bash was chosen as an automation language because of its high availability on Linux distributions. Subsequently, using Bash instead of Ansible allows to install dependencies on nodes which might not be accessible with Ansible such as isolated virtual machines.
 
 Raspberry Pi nodes are ARM based and this can pose limits on the available software, for instance Logstash will not compile or run on ARM based systems. It is important to take these limits into account and before starting to implement properly investigate software and its availability.
 
@@ -246,7 +246,7 @@ In Table \ref{tab:specs} a comparison of differences in hardware is detailed. It
 \end{table}
 
 \subsection{Network}
-The network during the experiments consisted of eight Raspberry Pi nodes each with two network interfaces. One of these interfaces had an internet connection through a bridged router, but was segregated from the actual internal network using Network Address Translation (NAT). The initial system design has every component installed on one Raspberry Pi but unfortunately some system components such as Logstash turned out to be incompatible with ARM based processors. A virtual machine running on an X86 based host was configured to resolve any ARM related compatibility issues, however, this host resided outside the NAT segregated network and additional steps using port forwarding and additional NAT were required to resolve them.
+The network during the experiments consisted of eight Raspberry Pi nodes each with two network interfaces. One of these interfaces had an internet connection through a bridged router, but was segregated from the actual internal network using Network Address Translation (NAT). The initial system design has every component installed on one Raspberry Pi but some system components, such as Logstash, turned out to be incompatible with ARM based processors. A virtual machine running on an X86 based host was configured to resolve any ARM related compatibility issues, however, this host resided outside the NAT segregated network and additional steps using port forwarding and additional NAT were required to resolve them.
 
 The following networking diagram shows an overview of the entire network using Cisco diagramming standards. In this diagram, the host at 192.168.3.2 is the virtual machine responsible for running X86 system components, while the host at 192.168.3.4 is the router responsible for segregating the Raspberry Pis from the rest of the internal network. Each of the firewalls represent the NAT that occurs on two places in the network which will require port forwarding and tunneling later.
 
@@ -261,9 +261,9 @@ The following networking diagram shows an overview of the entire network using C
 \subsection{New software introduction}
 An environment as similar as possible to the one used at CERN is desired. It has, however, proven unfeasible to use CentOS, due to the limitations the Raspberry pi version has in comparison to the CentOS x86\_64 image. One of the main reasons is the inability to switch between gcc versions. Normally, a tool called SCL provides the switching for specific versions of many development tools. Furthermore, the version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. To continue using CentOS, gcc would have to be built from source.
 
-To resolve the issues with the CentOS image, an alternative had to be elected and based on previous experience, Manjaro 17.1 was chosen. Manjaro provides a full featured ARM image for with a large amount of available packages. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
+To resolve the issues with the CentOS image, an alternative had to be chosen. And based on previous experience, Manjaro 17.1 was chosen. Manjaro provides a full featured ARM image for with a large amount of available packages. Manjaro being an Arch based distribution is extremely permissive in adaptive configurations allowing it to closely reflect any other distribution.
 
-Unfortunately, due to the rolling release model of Manjaro, this also led to a lot of issues including, but not limited to: broken packages, unavailable mirrors and missing kernel modules. As an alternative, Raspbian stretch was chosen because of its extensive support and large community, which should allow to more easily mitigate problems. 
+Unfortunately, due to the rolling release model of Manjaro, this also led to a lot of issues including, but not limited to: broken packages, unavailable mirrors and missing kernel modules. As an alternative, Raspbian stretch was chosen because of its extensive support and large community, which should allow to more easily mitigate problems.
 
 Based on the reports of the previous experiments, a table could be compiled which compares the version of libraries from the legacy software to the versions used in the new software. It should be noted that the information about the original O2Balancer was determined to be partially incorrect as it does not use FairMQ itself but instead relies on FairRoot.
 
@@ -338,7 +338,7 @@ Metricbeat can be used to gather statistics of the nodes. This data can be sent 
 
 To easily visualize the data, Kibana can be used to retrieve the data from Elasticsearch. This service should also run on the ICN. By port forwarding the service on an external machine, Kibana can be viewed inside a web browser.
 
-Due to incompatibilities with Logstash on ARM, both Logstash and ElasticSearch were installed on the X86 virtual machine. The overall experience with MELK was very poor.
+Due to incompatibilities with Logstash on ARM, both Logstash and ElasticSearch were installed on the X86 virtual machine. The overall experience with MELK could have been better when looking at the installation procedure.
 
 Kibana is part of the ELK stack, which is used to properly interpret metrics from the hardware and network during experiments. ELK is short for Elasticsearch, Logstash and Kibana. These three pieces of software process incoming data from hardware components running Metricbeat.
 
@@ -402,7 +402,7 @@ The decision to use Metricbeat was heavily based on it’s extensive selection o
 \subsection{Source code documentation}
 Beside the regular documentation, the source code itself can also be documented. This helps to understand what the code does. This is especially important for the developers, since they might have to modify the logic or add additional features.
 
-This project uses Doxygen to create the documentation. Doxygen is a library that can automatically generate documentation by scanning through the source file for specific comments.Furthermore, Doxygen can extract the file structure of the project. The output will be in the form of an HTML webpage or multiple LaTeX files. 
+This project uses Doxygen to create the documentation. Doxygen is a framework that can automatically generate documentation by scanning through the source file for specific comments.Furthermore, Doxygen can extract the file structure of the project. The output will be in the form of an HTML webpage or multiple LaTeX files. 
 
 \subsubsection{Generate}
 In order to use Doxygen for this project, it should be installed on the machine beforehand. It’s important to note that Doxygen will be executed through CMake. So the path to the library should be findable for CMake.
@@ -614,7 +614,7 @@ During the experiment it became clear that having multiple FLPs further limits t
 The results shows that the number of FLPs has an impact on the maximum throughput that can be achieved and should be taken into account in further experiments. 
 
 \begin{table}[H]
-	\textbf{Mean message loss per configuration - 6000 messages at an rate of 200Hz (30 seconds)}
+	\textbf{Mean message loss per configuration - 6000 messages at a rate of 200Hz (30 seconds)}
 	\begin{center}
 		\begin{tabularx}{\textwidth}{ | X | X | X | X | }
 			\hline
