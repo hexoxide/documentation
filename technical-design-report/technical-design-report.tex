@@ -36,11 +36,13 @@
 
 \begin{document}
 \maketitle
-\addcontentsline{toc}{section}{\protect\numberline{}Title page} % Include table of contents without partition numbering
+\newpage
+
+\tableofcontents{}
 \newpage
 
 \section*{Changelog}
-\addcontentsline{toc}{section}{\protect\numberline{}Changelog}
+\addcontentsline{toc}{section}{\protect\numberline{}Changelog} % Include table of contents without partition numbering
 \begin{table}[H]
 	\begin{center}	
 		\begin{tabularx}{\textwidth}{ | l | l | X | }
@@ -88,9 +90,6 @@
 		\end{tabularx}
 	\end{center}
 \end{table}
-\newpage
-
-\tableofcontents{}
 \newpage
 
 \section*{Introduction}
