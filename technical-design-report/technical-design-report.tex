@@ -229,7 +229,7 @@ According to the Alice technical design report \cite{Buncic:2011297}, there will
 
 A set of 80 computing devices grouped in units of four has been provided by the Amsterdam University of Applied Sciences (AUAS) for this project. These 80 nodes will be used to simulate network scenarios as close as possible to the actual O$^2$ computing network. The computing devices at AUAS will be Raspberry Pis, specifically, model 3 B+.
 
-In Table \ref{tab:specs} a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
+In table \ref{tab:specs} a comparison of differences in hardware is detailed. It is clear that the computing nodes provided by AUAS are vastly inferior to the computing hardware that will become available for Alice O$^2$. These hardware differences must be taken greatly into account during the project and its various experiments.
 
 \begin{table}[H]
 	\begin{center}
@@ -456,10 +456,10 @@ There are several ways to add comments in the source code which will be detected
 
 \end{itemize}
 
-The full documentation of Doxygen is available online \cite{doxygen}
+The full documentation of Doxygen is available online \cite{doxygen}.
 
 \section{Synthetic benchmarks}
-To measure the maximum throughput that can be achieved on the network, the \hyperref[sec:ref04]{iPerf3 [4]} tool was used to measure the throughput for 10 seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
+To measure the maximum throughput that can be achieved on the network, the \cite{iperf3} tool was used to measure the throughput for ten seconds. The measurement was repeated 50 times. The results show that the network throughput has a relatively low variance and is almost always consistently 94Mbit/s.
 
 The 94Mbit of throughput was expected. Even though the Raspberry Pi has a 1Gbit interface, this is limited to 300Mbit due to sharing a USB 2.0 host controller. This limited throughput is due to the Raspberry Pi’s being connected via a 100Mbit switch.
 
@@ -545,9 +545,9 @@ The experiment should run for 30 seconds and is validated with tight timing cons
 			Messages & 6000 & \textbf{Type} & \textbf{Ip} \\ \hline
 			Runtime & 30 seconds & ICN & 192.168.1.4 \\ \hline
 			Message size & Variable & FLP 1 & 192.168.1.3 \\ \hline
-			Source commit & \hyperref[sec:ref10]{cbaebb9 [10]} & EPN & 192.168.1.2 \\ \hline
-			Documentation &  \hyperref[sec:ref11]{cdbb643 [11]} & FLP 2 & 192.168.1.5 \\ \hline
-			Arguments & \hyperref[sec:appendix01]{appendix} & FLP 3 & 192.168.1.6 \\ \hline
+			Source commit & \href{https://github.com/hexoxide/O2-Balancer2/tree/cbaebb94c52d212fffc07aa540f9e21eae1ebea0}{cbaebb9} & EPN & 192.168.1.2 \\ \hline
+			Documentation &  \href{https://github.com/hexoxide/documentation/tree/cdbb643c6ebc875e73e8c1c2433c6d14cda05aca}{cdbb643} & FLP 2 & 192.168.1.5 \\ \hline
+			Arguments & \ref{sec:appendix01} & FLP 3 & 192.168.1.6 \\ \hline
 		\end{tabular}
 		\caption{The specific configuration lists essential parameters as well as the specific commit referencing to the source code.}
 		\label{tab:configbaseline}
@@ -645,7 +645,6 @@ Eight nodes are configured during this experiment and the node ratio of 1:6 with
 
 Each configuration is run for ten iterations to achieve a normal distribution should advanced statistical analysis be required later. Additionally, each configuration gets one iteration where the total operation time is set to three minutes instead of 30 seconds so that any variation caused by iteration time can be detected. This will also help determining if an iteration time of 30 seconds is sufficient as this has been used as iteration time in past experiments as well as these experiments. The rationale is that the short iterations could hide potential network bottlenecks that are mitigated using network buffers. However, network buffers can only mitigate such a network bottleneck for a short duration so, as a result the longer iteration time should discover these problems.
 
-
 \begin{lstlisting}[language=C++]
 /**
  * Determines the next appropriate channel the FLP should use 
@@ -689,9 +688,9 @@ uint64_t InformationControlNode::determineChannel()
 			Messages & 1500 / 6000 & \textbf{Type} & \textbf{Ip} \\ \hline
 			Runtime & 30 seconds & ICN & 192.168.1.1 \\ \hline
 			Message size & Variable & FLP 1 & 192.168.1.2 \\ \hline
-			Source commit & \hyperref[sec:ref10]{5914f78 [10]} & EPN 1 / FLP 2 & 192.168.1.3 \\ \hline
-			Documentation &  \hyperref[sec:ref11]{347173e [11]} & EPN 2 & 192.168.1.4 \\ \hline
-			Arguments & \hyperref[sec:appendix02]{appendix} & EPN 3 & 192.168.1.5 \\ \hline
+			Source commit & \href{https://github.com/hexoxide/O2-Balancer2/tree/5914f78c0321bb8d3497e3b5bb1dd5ce7cbe57d5}{5914f78} & EPN 1 / FLP 2 & 192.168.1.3 \\ \hline
+			Documentation &  \href{https://github.com/hexoxide/documentation/tree/347173e3272dbe1001fdf3191766831d0aa87e5f}{347173e} & EPN 2 & 192.168.1.4 \\ \hline
+			Arguments & \ref{sec:appendix02} & EPN 3 & 192.168.1.5 \\ \hline
 			\multicolumn{2}{ | l | }{\multirow{3}{*}{}} & EPN 4 & 192.168.1.6 \\
 			\multicolumn{2}{ | l | }{} & EPN 5 & 192.168.1.7 \\
 			\multicolumn{2}{ | l | }{} & EPN 6 & 192.168.1.8 \\ \hline
