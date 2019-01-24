@@ -96,7 +96,7 @@
 \addcontentsline{toc}{section}{\protect\numberline{}Introduction}
 This document reflects the discovered \& analyzed technical components for the CERN Load Balancing project. Components are identified in previously available documents as well as discoveries of the project team itself. 
 
-Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experimenting and make new discoveries. This new software has evolved from previous work which will be briefly touched upon. It is important to note that there is a distinction between the two new systems we provide: the ICN and the ZooKeeper implementation.
+Experiments and their setup are detailed so they can be repeated easily in the future, as well as instructions on how to install all required components. This work will introduce new software that can be used in future projects to continue experimenting and make new discoveries. This new software has evolved from previous work which will be briefly touched upon. It is important to note that there is a distinction between the two new systems introduced by the new software: the ICN and the ZooKeeper implementation.
 
 The rationale for the project will be explained in the introduction along with its common terminology, an overview of past and future events as well as information about previous work.
 
@@ -483,7 +483,7 @@ Before diving into the research, this paragraph describes the general problem of
 
 \subsection{Main Research Question} 
 The focus of the project is to deliver a scalable, performent and autonomous load balancing system, and also to conduct experiments to gather information about the reliability of the system.
-At the initial state of the project we defined the main research question as following: \textit{“How do different load-balancing algorithms compare in transferring a continuous data stream across parallel many-to-one streams?”}
+At the initial state of the project the main research question was defined as following: \textit{“How do different load-balancing algorithms compare in transferring a continuous data stream across parallel many-to-one streams?”}
 
 \subsection{Sub Research Question}
 In order to answer the main research question, a few subquestion are established to divide the whole project into smaller parts. These are the subquestions:
@@ -856,7 +856,7 @@ In all the red highlighted configurations, the total size of accumulated message
 
 
 \section{O2Balancer2 ZooKeeper version}
-The second system we provide is the round-robin whitelist load balancer, using ZooKeeper\cite{apache_zookeeper} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts up or shuts down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
+The second system provided is the round-robin whitelist load balancer, using ZooKeeper\cite{apache_zookeeper} for node registration and distribution. This new implementation offers a robust system: the order of which FLP/EPN/ICN starts up or shuts down has no impact on the system. With a failover of any of the three nodes the system will continue working: after the node comes back online, it will be part of the system again. 
 
 It is imported to note that the ICN is very different in this system than in the O2Balancer2 ICN version. The ICN in this implementation \textbf{only} sends heartbeats to the FLPs.
 
